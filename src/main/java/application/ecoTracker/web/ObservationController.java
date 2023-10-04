@@ -1,5 +1,6 @@
 package application.ecoTracker.web;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -30,8 +31,16 @@ public class ObservationController {
 
     @RequestMapping("/findAll")
     @ResponseBody
-    public List<Observation> findAll() {
-        return observationDAO.findAll();
+    public List<ObservationData> findAll() {
+        List<Observation> observationList = observationDAO.findAll();
+
+        List<ObservationData> observationDataList = new ArrayList<>();
+        for(Observation observation : observationList){
+            observationDataList.add(new ObservationData(observation));
+        }        
+
+        return observationDataList;
+
     }
 
     @RequestMapping("/create")
@@ -53,6 +62,7 @@ public class ObservationController {
         observationDAO.save(observation);
         return new ObservationData(observation);
     }
+
     
     
 }
