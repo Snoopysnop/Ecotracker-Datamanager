@@ -1,5 +1,6 @@
 package application.ecoTracker.domain;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import application.ecoTracker.domain.utils.GPSCoordinates;
@@ -10,7 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Contribution {
+public class Contribution implements Serializable {
 
     private long id;
 
@@ -21,10 +22,26 @@ public class Contribution {
     private String imageFile;
     private GPSCoordinates location;
     private String description;
-    private LocalDateTime date;
+    private LocalDateTime creationDate;
 
-    private int upVoteCount;
-    private int downVoteCount;
+    private int upVoteCount = 0;
+    private int downVoteCount = 0;
+
+    protected Contribution() {
+
+    }
+
+
+    public Contribution(User auteur, TaxonomyGroup taxonomyGroup, String title, String imageFile,
+            GPSCoordinates location, String description) {
+        this.auteur = auteur;
+        this.taxonomyGroup = taxonomyGroup;
+        this.title = title;
+        this.imageFile = imageFile;
+        this.location = location;
+        this.description = description;
+        this.creationDate = LocalDateTime.now();
+    }
 
     @Id
     @GeneratedValue
@@ -46,7 +63,7 @@ public class Contribution {
     }
 
     public TaxonomyGroup getTaxonomyGroup() {
-        return taxonomyGroup;
+        return this.taxonomyGroup;
     }
 
     public void setTaxonomyGroup(TaxonomyGroup taxonomyGroup) {
@@ -85,12 +102,12 @@ public class Contribution {
         this.description = description;
     }
 
-    public LocalDateTime getDate() {
-        return date;
+    public LocalDateTime getCreationDate() {
+        return creationDate;
     }
 
-    public void setDate(LocalDateTime date) {
-        this.date = date;
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
     }
 
     public int getUpVoteCount() {
@@ -108,5 +125,15 @@ public class Contribution {
     public void setDownVoteCount(int downVoteCount) {
         this.downVoteCount = downVoteCount;
     }
+
+    @Override
+    public String toString() {
+        return "Contribution [id=" + id + ", auteur=" + auteur + ", taxonomyGroup=" + taxonomyGroup + ", title=" + title
+                + ", imageFile=" + imageFile + ", location=" + location + ", description=" + description
+                + ", creationDate=" + creationDate + ", upVoteCount=" + upVoteCount + ", downVoteCount=" + downVoteCount
+                + "]";
+    }
+
+    
 
 }
