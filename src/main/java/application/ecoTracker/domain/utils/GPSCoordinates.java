@@ -1,29 +1,40 @@
 package application.ecoTracker.domain.utils;
 
-public class GPSCoordinates {
+import java.io.Serializable;
 
-    private double x;
-    private double y;
+public class GPSCoordinates implements Serializable{
 
-    public GPSCoordinates(double x, double y) {
-        this.x = x;
-        this.y = y;
+    private double longitude;
+    private double latitude;
+
+    protected GPSCoordinates() {
+
     }
 
-    public double getX() {
-        return x;
+    public GPSCoordinates(double longitude, double latitude) {
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
-    public void setX(double x) {
-        this.x = x;
+    public double getlongitude() {
+        return longitude;
     }
 
-    public double getY() {
-        return y;
+    public void setlongitude(double longitude) {
+        this.longitude = longitude;
     }
 
-    public void setY(double y) {
-        this.y = y;
+    public double getlatitude() {
+        return latitude;
+    }
+
+    public void setlatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + longitude + ", " + latitude + ")";
     }
 
     
