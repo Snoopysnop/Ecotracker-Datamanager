@@ -1,8 +1,6 @@
 package application.ecoTracker.domain.utils;
 
-import java.io.Serializable;
-
-public enum TaxonomyGroup implements Serializable{
+public enum TaxonomyGroup {
     
     Animals,
     Fish,
