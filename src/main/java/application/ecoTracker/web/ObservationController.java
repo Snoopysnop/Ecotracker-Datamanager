@@ -13,7 +13,6 @@ import application.ecoTracker.DAO.UserDAO;
 import application.ecoTracker.DAO.ObservationDAO;
 import application.ecoTracker.domain.Observation;
 import application.ecoTracker.domain.User;
-import application.ecoTracker.domain.utils.TaxonomyGroup;
 import application.ecoTracker.service.DTO.ObservationDTO;
 import application.ecoTracker.service.data.ObservationData;
 
@@ -50,7 +49,7 @@ public class ObservationController {
             return null;
         }
         
-        Observation observation =  new Observation(auteur, observationDTO.getTaxonomyGroup(), observationDTO.getTitle(), observationDTO.getImageFile(), observationDTO.getLocation(), observationDTO.getDescription());
+        Observation observation = new Observation(auteur, observationDTO.getTaxonomyGroup(), observationDTO.getTitle(), observationDTO.getImageList(), observationDTO.getLocation(), observationDTO.getDescription());
         observationDAO.save(observation);
         return new ObservationData(observation);
     }

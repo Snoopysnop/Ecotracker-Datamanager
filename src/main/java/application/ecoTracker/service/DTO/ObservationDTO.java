@@ -1,6 +1,7 @@
 package application.ecoTracker.service.DTO;
 
 import java.io.Serializable;
+import java.util.List;
 
 import application.ecoTracker.domain.utils.GPSCoordinates;
 import application.ecoTracker.domain.utils.TaxonomyGroup;
@@ -11,7 +12,7 @@ public class ObservationDTO implements Serializable {
 
     private TaxonomyGroup taxonomyGroup;
     private String title;
-    private String imageFile;
+    private List<String> imageList;
     private GPSCoordinates location;
     private String description;
 
@@ -38,11 +39,11 @@ public class ObservationDTO implements Serializable {
     public void setTitle(String title) {
         this.title = title;
     }
-    public String getImageFile() {
-        return imageFile;
+    public List<String> getImageList() {
+        return imageList;
     }
-    public void setImageFile(String imageFile) {
-        this.imageFile = imageFile;
+    public void setImageList(List<String> imageList) {
+        this.imageList = imageList;
     }
     public GPSCoordinates getLocation() {
         return location;

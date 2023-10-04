@@ -2,6 +2,7 @@ package application.ecoTracker.domain;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import application.ecoTracker.domain.utils.GPSCoordinates;
 import application.ecoTracker.domain.utils.TaxonomyGroup;
@@ -19,7 +20,7 @@ public class Observation implements Serializable {
 
     private TaxonomyGroup taxonomyGroup;
     private String title;
-    private String imageFile;
+    private List<String> imageList;
     private GPSCoordinates location;
     private String description;
     private LocalDateTime creationDate;
@@ -32,12 +33,12 @@ public class Observation implements Serializable {
     }
 
 
-    public Observation(User auteur, TaxonomyGroup taxonomyGroup, String title, String imageFile,
+    public Observation(User auteur, TaxonomyGroup taxonomyGroup, String title, List<String> imageList,
             GPSCoordinates location, String description) {
         this.auteur = auteur;
         this.taxonomyGroup = taxonomyGroup;
         this.title = title;
-        this.imageFile = imageFile;
+        this.imageList = imageList;
         this.location = location;
         this.description = description;
         this.creationDate = LocalDateTime.now();
@@ -78,12 +79,12 @@ public class Observation implements Serializable {
         this.title = title;
     }
 
-    public String getImageFile() {
-        return imageFile;
+    public List<String> getImageList() {
+        return imageList;
     }
 
-    public void setImageFile(String imageFile) {
-        this.imageFile = imageFile;
+    public void setImageList(List<String> imageList) {
+        this.imageList = imageList;
     }
 
     public GPSCoordinates getLocation() {
@@ -129,7 +130,7 @@ public class Observation implements Serializable {
     @Override
     public String toString() {
         return "Observation [id=" + id + ", auteur=" + auteur + ", taxonomyGroup=" + taxonomyGroup + ", title=" + title
-                + ", imageFile=" + imageFile + ", location=" + location + ", description=" + description
+                + ", imageList=" + imageList + ", location=" + location + ", description=" + description
                 + ", creationDate=" + creationDate + ", upVoteCount=" + upVoteCount + ", downVoteCount=" + downVoteCount
                 + "]";
     }

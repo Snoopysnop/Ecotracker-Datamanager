@@ -1,6 +1,7 @@
 package application.ecoTracker.service.data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import application.ecoTracker.domain.Observation;
 
@@ -10,7 +11,7 @@ public class ObservationData {
 
     private String taxonomyGroup;
     private String title;
-    private String imageFile;
+    private List<String> imageList;
     private String location;
     private String description;
     private LocalDateTime creationDate;
@@ -20,7 +21,7 @@ public class ObservationData {
         this.auteurNickname = observation.getAuteur().getNickname();
         this.taxonomyGroup = observation.getTaxonomyGroup().name();
         this.title = observation.getTitle();
-        this.imageFile = observation.getImageFile();
+        this.imageList = observation.getImageList();
         this.location = observation.getLocation().toString();
         this.description = observation.getDescription();
         this.creationDate = observation.getCreationDate();
@@ -45,11 +46,11 @@ public class ObservationData {
     public void setTitle(String title) {
         this.title = title;
     }
-    public String getImageFile() {
-        return imageFile;
+    public List<String> getImageList() {
+        return imageList;
     }
-    public void setImageFile(String imageFile) {
-        this.imageFile = imageFile;
+    public void setImageList(List<String> imageList) {
+        this.imageList = imageList;
     }
     public String getLocation() {
         return location;
