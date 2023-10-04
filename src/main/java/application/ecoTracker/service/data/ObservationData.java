@@ -2,9 +2,9 @@ package application.ecoTracker.service.data;
 
 import java.time.LocalDateTime;
 
-import application.ecoTracker.domain.Contribution;
+import application.ecoTracker.domain.Observation;
 
-public class ContributionData {
+public class ObservationData {
 
     private String auteurNickname;
 
@@ -16,14 +16,14 @@ public class ContributionData {
     private LocalDateTime creationDate;
 
 
-    public ContributionData(Contribution contribution){
-        this.auteurNickname = contribution.getAuteur().getNickname();
-        this.taxonomyGroup = contribution.getTaxonomyGroup().name();
-        this.title = contribution.getTitle();
-        this.imageFile = contribution.getImageFile();
-        this.location = contribution.getLocation().toString();
-        this.description = contribution.getDescription();
-        this.creationDate = contribution.getCreationDate();
+    public ObservationData(Observation observation){
+        this.auteurNickname = observation.getAuteur().getNickname();
+        this.taxonomyGroup = observation.getTaxonomyGroup().name();
+        this.title = observation.getTitle();
+        this.imageFile = observation.getImageFile();
+        this.location = observation.getLocation().toString();
+        this.description = observation.getDescription();
+        this.creationDate = observation.getCreationDate();
 
     }
 

@@ -17,7 +17,7 @@ public class User implements Serializable{
     private String nickname;
     private LocalDateTime creationDate;
 
-    private List<Contribution> contributionList = new ArrayList<>();
+    private List<Observation> observationList = new ArrayList<>();
 
     protected User() {
         
@@ -56,18 +56,18 @@ public class User implements Serializable{
     }
 
     @OneToMany(mappedBy  = "auteur")
-    public List<Contribution> getContributionList() {
-        return contributionList;
+    public List<Observation> getObservationList() {
+        return observationList;
     }
 
-    public void setContributionList(List<Contribution> contributionList) {
-        this.contributionList = contributionList;
+    public void setObservationList(List<Observation> observationList) {
+        this.observationList = observationList;
     }
 
     @Override
     public String toString() {
-        return "User [id=" + id + ", nickname=" + nickname + ", creationDate=" + creationDate + ", contributionList="
-                + contributionList + "]";
+        return "User [id=" + id + ", nickname=" + nickname + ", creationDate=" + creationDate + ", observationList="
+                + observationList + "]";
     }
 
 

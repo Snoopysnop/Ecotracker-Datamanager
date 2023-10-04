@@ -5,7 +5,7 @@ import java.io.Serializable;
 import application.ecoTracker.domain.utils.GPSCoordinates;
 import application.ecoTracker.domain.utils.TaxonomyGroup;
 
-public class ContributionDTO implements Serializable {
+public class ObservationDTO implements Serializable {
 
     private long auteur_id;
 
@@ -16,7 +16,7 @@ public class ContributionDTO implements Serializable {
     private String description;
 
 
-    protected ContributionDTO() {
+    protected ObservationDTO() {
 
     }
 

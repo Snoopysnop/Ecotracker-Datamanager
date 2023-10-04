@@ -11,7 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Contribution implements Serializable {
+public class Observation implements Serializable {
 
     private long id;
 
@@ -27,12 +27,12 @@ public class Contribution implements Serializable {
     private int upVoteCount = 0;
     private int downVoteCount = 0;
 
-    protected Contribution() {
+    protected Observation() {
 
     }
 
 
-    public Contribution(User auteur, TaxonomyGroup taxonomyGroup, String title, String imageFile,
+    public Observation(User auteur, TaxonomyGroup taxonomyGroup, String title, String imageFile,
             GPSCoordinates location, String description) {
         this.auteur = auteur;
         this.taxonomyGroup = taxonomyGroup;
@@ -128,7 +128,7 @@ public class Contribution implements Serializable {
 
     @Override
     public String toString() {
-        return "Contribution [id=" + id + ", auteur=" + auteur + ", taxonomyGroup=" + taxonomyGroup + ", title=" + title
+        return "Observation [id=" + id + ", auteur=" + auteur + ", taxonomyGroup=" + taxonomyGroup + ", title=" + title
                 + ", imageFile=" + imageFile + ", location=" + location + ", description=" + description
                 + ", creationDate=" + creationDate + ", upVoteCount=" + upVoteCount + ", downVoteCount=" + downVoteCount
                 + "]";
