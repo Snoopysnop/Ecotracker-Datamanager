@@ -16,7 +16,8 @@ public class Observation implements Serializable {
 
     private long id;
 
-    private User auteur;
+    private User author;
+    private Compaign compaign ;
 
     private TaxonomyGroup taxonomyGroup;
     private String title;
@@ -32,10 +33,10 @@ public class Observation implements Serializable {
 
     }
 
-
-    public Observation(User auteur, TaxonomyGroup taxonomyGroup, String title, List<String> imageList,
+    public Observation(User author, Compaign compaign, TaxonomyGroup taxonomyGroup, String title, List<String> imageList,
             GPSCoordinates location, String description) {
-        this.auteur = auteur;
+        this.author = author;
+        this.compaign = compaign;
         this.taxonomyGroup = taxonomyGroup;
         this.title = title;
         this.imageList = imageList;
@@ -55,12 +56,21 @@ public class Observation implements Serializable {
     }
 
     @ManyToOne
-    public User getAuteur() {
-        return auteur;
+    public User getAuthor() {
+        return author;
     }
 
-    public void setAuteur(User auteur) {
-        this.auteur = auteur;
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    @ManyToOne
+    public Compaign getCompaign() {
+        return compaign;
+    }
+
+    public void setCompaign(Compaign compaign) {
+        this.compaign = compaign;
     }
 
     public TaxonomyGroup getTaxonomyGroup() {
@@ -129,12 +139,11 @@ public class Observation implements Serializable {
 
     @Override
     public String toString() {
-        return "Observation [id=" + id + ", auteur=" + auteur + ", taxonomyGroup=" + taxonomyGroup + ", title=" + title
+        return "Observation [id=" + id + ", author=" + author + ", taxonomyGroup=" + taxonomyGroup + ", title=" + title
                 + ", imageList=" + imageList + ", location=" + location + ", description=" + description
                 + ", creationDate=" + creationDate + ", upVoteCount=" + upVoteCount + ", downVoteCount=" + downVoteCount
                 + "]";
     }
 
-    
 
 }

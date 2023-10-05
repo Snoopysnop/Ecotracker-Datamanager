@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import application.ecoTracker.DAO.UserDAO;
+import application.ecoTracker.DAO.CompaignDAO;
 import application.ecoTracker.DAO.ObservationDAO;
+import application.ecoTracker.domain.Compaign;
 import application.ecoTracker.domain.Observation;
 import application.ecoTracker.domain.User;
 import application.ecoTracker.service.DTO.ObservationDTO;
@@ -28,6 +30,9 @@ public class ObservationController {
 
     @Autowired
     private UserDAO userDAO;
+
+    @Autowired
+    private CompaignDAO compaignDAO;
 
     @RequestMapping("/findAll")
     @ResponseBody
@@ -47,18 +52,30 @@ public class ObservationController {
     @ResponseBody
     public ObservationData create(@RequestBody ObservationDTO observationDTO){
 
-        User auteur;
+        User author;
 
         try{
-            auteur = userDAO.findById(observationDTO.getAuteur_id()).get();
+            author = userDAO.findById(observationDTO.getAuthor_id()).get();
         }
         catch (Exception e) {
-            LOGGER.warning("auteur with id " + observationDTO.getAuteur_id() + " not found");
+            LOGGER.warning("auhtor with id " + observationDTO.getAuthor_id() + " not found");
             LOGGER.warning(e.toString());
-            return null;
+            author =  null;
+        }
+
+        Compaign compaign;
+
+        try{
+            compaign = compaignDAO.findById(observationDTO.getCompaign_id()).get();
+            LOGGER.info(compaign.toString());
+        }
+        catch (Exception e) {
+            LOGGER.warning("compaign with id " + observationDTO.getCompaign_id() + " not found");
+            LOGGER.warning(e.toString());
+            compaign =  null;
         }
         
-        Observation observation = new Observation(auteur, observationDTO.getTaxonomyGroup(), observationDTO.getTitle(), observationDTO.getImageList(), observationDTO.getLocation(), observationDTO.getDescription());
+        Observation observation = new Observation(author, compaign, observationDTO.getTaxonomyGroup(), observationDTO.getTitle(), observationDTO.getImageList(), observationDTO.getLocation(), observationDTO.getDescription());
         observationDAO.save(observation);
         return new ObservationData(observation);
     }

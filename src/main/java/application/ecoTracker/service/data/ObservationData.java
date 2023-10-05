@@ -1,13 +1,14 @@
 package application.ecoTracker.service.data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import application.ecoTracker.domain.Observation;
 
-public class ObservationData {
+public class ObservationData implements Serializable {
 
-    private String auteurNickname;
+    private String pseudo;
 
     private String taxonomyGroup;
     private String title;
@@ -18,7 +19,7 @@ public class ObservationData {
 
 
     public ObservationData(Observation observation){
-        this.auteurNickname = observation.getAuteur().getNickname();
+        this.pseudo = observation.getAuthor().getPseudo();
         this.taxonomyGroup = observation.getTaxonomyGroup().name();
         this.title = observation.getTitle();
         this.imageList = observation.getImageList();
@@ -28,11 +29,11 @@ public class ObservationData {
 
     }
 
-    public String getAuteurNickname() {
-        return auteurNickname;
+    public String getPseudo() {
+        return pseudo;
     }
-    public void setAuteurNickname(String auteurNickname) {
-        this.auteurNickname = auteurNickname;
+    public void setPseudo(String pseudo) {
+        this.pseudo = pseudo;
     }
     public String getTaxonomyGroup() {
         return taxonomyGroup;
