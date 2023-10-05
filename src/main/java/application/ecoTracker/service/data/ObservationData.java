@@ -8,7 +8,9 @@ import application.ecoTracker.domain.Observation;
 
 public class ObservationData implements Serializable {
 
-    private String pseudo;
+    private Long id;
+
+    private String author;
 
     private String taxonomyGroup;
     private String title;
@@ -19,7 +21,8 @@ public class ObservationData implements Serializable {
 
 
     public ObservationData(Observation observation){
-        this.pseudo = observation.getAuthor().getPseudo();
+        this.id = observation.getId();
+        this.author = observation.getAuthor().getPseudo();
         this.taxonomyGroup = observation.getTaxonomyGroup().name();
         this.title = observation.getTitle();
         this.imageList = observation.getImageList();
@@ -29,11 +32,11 @@ public class ObservationData implements Serializable {
 
     }
 
-    public String getPseudo() {
-        return pseudo;
+    public String getAuthor() {
+        return author;
     }
-    public void setPseudo(String pseudo) {
-        this.pseudo = pseudo;
+    public void setAuthor(String author) {
+        this.author = author;
     }
     public String getTaxonomyGroup() {
         return taxonomyGroup;
@@ -72,6 +75,18 @@ public class ObservationData implements Serializable {
 
     public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
+    }
+
+
+
+    public Long getId() {
+        return id;
+    }
+
+
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     
