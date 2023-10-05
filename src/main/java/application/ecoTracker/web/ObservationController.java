@@ -41,7 +41,13 @@ public class ObservationController {
 
         List<ObservationData> observationDataList = new ArrayList<>();
         for(Observation observation : observationList){
-            observationDataList.add(new ObservationData(observation));
+            try {
+                observationDataList.add(new ObservationData(observation));
+            }
+            catch(Exception e){
+                LOGGER.warning("error getting observation " + observation.getId());
+                LOGGER.warning(e.toString());
+            }
         }        
 
         return observationDataList;
