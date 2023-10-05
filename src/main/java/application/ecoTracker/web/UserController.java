@@ -27,8 +27,8 @@ public class UserController {
 
     @RequestMapping("/create")
     @ResponseBody
-    public User create(@RequestBody String nickname){
-        User user = new User(nickname);
+    public User create(@RequestBody String pseudo){
+        User user = new User(pseudo);
         userDAO.save(user);
         return user;
     }

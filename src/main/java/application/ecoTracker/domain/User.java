@@ -11,21 +11,21 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 @Entity
-public class User implements Serializable{
+public class User implements Serializable {
 
     private long id;
-    private String nickname;
+    private String pseudo;
     private LocalDateTime creationDate;
 
-    private List<Observation> observationList = new ArrayList<>();
+    private List<Observation> observationList;
 
     protected User() {
         
     }
 
 
-    public User(String nickname) {
-        this.nickname = nickname;
+    public User(String pseudo) {
+        this.pseudo = pseudo;
         this.creationDate = LocalDateTime.now();
     }
 
@@ -39,12 +39,12 @@ public class User implements Serializable{
         this.id = id;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getPseudo() {
+        return pseudo;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setPseudo(String pseudo) {
+        this.pseudo = pseudo;
     }
 
     public LocalDateTime getCreationDate() {
@@ -55,7 +55,7 @@ public class User implements Serializable{
         this.creationDate = creationDate;
     }
 
-    @OneToMany(mappedBy  = "auteur")
+    @OneToMany(mappedBy  = "author")
     public List<Observation> getObservationList() {
         return observationList;
     }
@@ -66,7 +66,7 @@ public class User implements Serializable{
 
     @Override
     public String toString() {
-        return "User [id=" + id + ", nickname=" + nickname + ", creationDate=" + creationDate + ", observationList="
+        return "User [id=" + id + ", pseudo=" + pseudo + ", creationDate=" + creationDate + ", observationList="
                 + observationList + "]";
     }
 
