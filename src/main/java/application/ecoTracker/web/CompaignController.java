@@ -4,13 +4,16 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import application.ecoTracker.DAO.CompaignDAO;
 import application.ecoTracker.DAO.ObservationDAO;
@@ -25,6 +28,8 @@ import application.ecoTracker.service.data.ObservationData;
 @RequestMapping("/compaign")
 public class CompaignController {
 
+    private static final Logger LOGGER = Logger.getLogger(ObservationController.class.getName());
+
     @Autowired
     private CompaignDAO compaignDAO;
 
@@ -34,7 +39,17 @@ public class CompaignController {
     @RequestMapping("/{id}")
     @ResponseBody
     public CompaignDTO findById(@PathVariable long id){
-       Compaign compaign =  compaignDAO.findById(id).get();
+
+        Compaign compaign;
+        try{
+            compaign =  compaignDAO.findById(id).get();
+        }
+
+        catch (Exception exception) {
+            LOGGER.info("Compaign " + id + " not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        
        return new CompaignDTO(compaign);
     }
 

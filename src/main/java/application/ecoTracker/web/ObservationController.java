@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import application.ecoTracker.DAO.UserDAO;
 import application.ecoTracker.DAO.CompaignDAO;
@@ -37,7 +39,17 @@ public class ObservationController {
     @RequestMapping("/observation/{id}")
     @ResponseBody
     public ObservationData findById(@PathVariable long id){
-        Observation observation = observationDAO.findById(id).get();
+
+        Observation observation;
+        try {
+            observation = observationDAO.findById(id).get();
+        }
+
+        catch (Exception exception) {
+            LOGGER.info("Observation " + id + " not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
         return new ObservationData(observation);
     }
 
@@ -71,9 +83,8 @@ public class ObservationController {
             author = userDAO.findById(observationDTO.getAuthor_id()).get();
         }
         catch (Exception e) {
-            LOGGER.warning("auhtor with id " + observationDTO.getAuthor_id() + " not found");
-            LOGGER.warning(e.toString());
-            author =  null;
+            LOGGER.info("User " + observationDTO.getAuthor_id() + " not found");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
 
         Compaign compaign;
@@ -83,9 +94,8 @@ public class ObservationController {
             LOGGER.info(compaign.toString());
         }
         catch (Exception e) {
-            LOGGER.warning("compaign with id " + observationDTO.getCompaign_id() + " not found");
-            LOGGER.warning(e.toString());
-            compaign =  null;
+            LOGGER.info("Compaign " + observationDTO.getCompaign_id() + " not found");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         
         Observation observation = new Observation(author, compaign, observationDTO.getTaxonomyGroup(), observationDTO.getTitle(), observationDTO.getImageList(), observationDTO.getLocation(), observationDTO.getDescription());
