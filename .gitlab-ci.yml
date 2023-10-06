@@ -24,5 +24,6 @@ deploy-job:      # This job runs in the deploy stage.
   stage: deploy
   script:
     - echo "Deploying application..."
+    - cd /home/debian/ecoTracker/datamanager/
     - git pull
     - echo "Application successfully deployed."
