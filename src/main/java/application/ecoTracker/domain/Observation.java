@@ -2,7 +2,6 @@ package application.ecoTracker.domain;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import application.ecoTracker.domain.utils.GPSCoordinates;
 import application.ecoTracker.domain.utils.TaxonomyGroup;
@@ -21,7 +20,6 @@ public class Observation implements Serializable {
 
     private TaxonomyGroup taxonomyGroup;
     private String title;
-    private List<String> imageList;
     private GPSCoordinates location;
     private String description;
     private LocalDateTime creationDate;
@@ -33,13 +31,12 @@ public class Observation implements Serializable {
 
     }
 
-    public Observation(User author, Compaign compaign, TaxonomyGroup taxonomyGroup, String title, List<String> imageList,
+    public Observation(User author, Compaign compaign, TaxonomyGroup taxonomyGroup, String title,
             GPSCoordinates location, String description) {
         this.author = author;
         this.compaign = compaign;
         this.taxonomyGroup = taxonomyGroup;
         this.title = title;
-        this.imageList = imageList;
         this.location = location;
         this.description = description;
         this.creationDate = LocalDateTime.now();
@@ -89,14 +86,6 @@ public class Observation implements Serializable {
         this.title = title;
     }
 
-    public List<String> getImageList() {
-        return imageList;
-    }
-
-    public void setImageList(List<String> imageList) {
-        this.imageList = imageList;
-    }
-
     public GPSCoordinates getLocation() {
         return location;
     }
@@ -140,7 +129,7 @@ public class Observation implements Serializable {
     @Override
     public String toString() {
         return "Observation [id=" + id + ", author=" + author + ", taxonomyGroup=" + taxonomyGroup + ", title=" + title
-                + ", imageList=" + imageList + ", location=" + location + ", description=" + description
+                + ", location=" + location + ", description=" + description
                 + ", creationDate=" + creationDate + ", upVoteCount=" + upVoteCount + ", downVoteCount=" + downVoteCount
                 + "]";
     }

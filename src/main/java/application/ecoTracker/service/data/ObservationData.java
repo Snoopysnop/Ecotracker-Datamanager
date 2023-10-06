@@ -1,8 +1,10 @@
 package application.ecoTracker.service.data;
 
+import java.io.File;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
+
+import org.springframework.beans.factory.annotation.Value;
 
 import application.ecoTracker.domain.Observation;
 
@@ -14,10 +16,13 @@ public class ObservationData implements Serializable {
 
     private String taxonomyGroup;
     private String title;
-    private List<String> imageList;
+    private String[] imageList;
     private String location;
     private String description;
     private LocalDateTime creationDate;
+
+    @Value("${imageFolder}")
+    private String imageFolder;
 
 
     public ObservationData(Observation observation){
@@ -25,7 +30,7 @@ public class ObservationData implements Serializable {
         this.author = observation.getAuthor().getPseudo();
         this.taxonomyGroup = observation.getTaxonomyGroup().name();
         this.title = observation.getTitle();
-        this.imageList = observation.getImageList();
+        this.imageList = new File("/home/mfouillen/cours/MMM/ecoTracker/datamanager/images/" + id + "/").list(); // TODO use imageFolder
         this.location = observation.getLocation().toString();
         this.description = observation.getDescription();
         this.creationDate = observation.getCreationDate();
@@ -50,10 +55,10 @@ public class ObservationData implements Serializable {
     public void setTitle(String title) {
         this.title = title;
     }
-    public List<String> getImageList() {
+    public String[] getImageList() {
         return imageList;
     }
-    public void setImageList(List<String> imageList) {
+    public void setImageList(String[] imageList) {
         this.imageList = imageList;
     }
     public String getLocation() {

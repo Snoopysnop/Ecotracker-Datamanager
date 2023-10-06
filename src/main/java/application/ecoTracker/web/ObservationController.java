@@ -1,16 +1,20 @@
 package application.ecoTracker.web;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import application.ecoTracker.DAO.UserDAO;
@@ -26,6 +30,9 @@ import application.ecoTracker.service.data.ObservationData;
 public class ObservationController {
 
     private static final Logger LOGGER = Logger.getLogger(ObservationController.class.getName());
+
+    @Value("${imageFolder}")
+    private String imageFolder;
 
     @Autowired
     private ObservationDAO observationDAO;
@@ -73,7 +80,19 @@ public class ObservationController {
 
     }
 
-    @RequestMapping("observation/create")
+    @RequestMapping("/observation/{id}/upload")
+    @ResponseBody
+    public void uploadImage(@PathVariable long id, @RequestParam("image") MultipartFile image){
+        try {
+            File path = new File(imageFolder + id + "/");
+            image.transferTo(new File(imageFolder + id + "/" + path.list().length + ".png")); 
+        } catch (Exception e) {
+            LOGGER.info("Can't upload for observation " + id);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping("/observation/create")
     @ResponseBody
     public ObservationData create(@RequestBody ObservationDTO observationDTO){
 
@@ -98,8 +117,12 @@ public class ObservationController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         
-        Observation observation = new Observation(author, compaign, observationDTO.getTaxonomyGroup(), observationDTO.getTitle(), observationDTO.getImageList(), observationDTO.getLocation(), observationDTO.getDescription());
+        Observation observation = new Observation(author, compaign, observationDTO.getTaxonomyGroup(), observationDTO.getTitle(), observationDTO.getLocation(), observationDTO.getDescription());
         observationDAO.save(observation);
+
+        File f = new File("./images/" + observation.getId());
+        f.mkdir();
+
         return new ObservationData(observation);
     }
 
