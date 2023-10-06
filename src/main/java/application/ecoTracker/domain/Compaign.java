@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import application.ecoTracker.domain.utils.Location;
 import application.ecoTracker.domain.utils.TaxonomyGroup;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
