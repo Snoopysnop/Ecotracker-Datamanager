@@ -20,6 +20,15 @@ public class CompaignDTO implements Serializable {
 
     }
 
+    public CompaignDTO(Compaign compaign){
+        this.name = compaign.getName();
+        this.description = compaign.getDescription();
+        this.startDate = compaign.getStartDate().toString();
+        this.endDate = compaign.getEndDate().toString();
+        this.groupsToIdentify = compaign.getGroupsToIdentify();
+        this.area = compaign.getArea();
+    }
+
 
     public String getName() {
         return name;

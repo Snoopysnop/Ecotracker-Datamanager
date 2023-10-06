@@ -21,7 +21,6 @@ import application.ecoTracker.service.DTO.ObservationDTO;
 import application.ecoTracker.service.data.ObservationData;
 
 @RestController
-@RequestMapping("/observation")
 public class ObservationController {
 
     private static final Logger LOGGER = Logger.getLogger(ObservationController.class.getName());
@@ -35,14 +34,14 @@ public class ObservationController {
     @Autowired
     private CompaignDAO compaignDAO;
 
-    @RequestMapping("/{id}")
+    @RequestMapping("/observation/{id}")
     @ResponseBody
     public ObservationData findById(@PathVariable long id){
         Observation observation = observationDAO.findById(id).get();
         return new ObservationData(observation);
     }
 
-    @RequestMapping("/findAll")
+    @RequestMapping("/observations")
     @ResponseBody
     public List<ObservationData> findAll() {
         List<Observation> observationList = observationDAO.findAll();
@@ -62,7 +61,7 @@ public class ObservationController {
 
     }
 
-    @RequestMapping("/create")
+    @RequestMapping("observation/create")
     @ResponseBody
     public ObservationData create(@RequestBody ObservationDTO observationDTO){
 

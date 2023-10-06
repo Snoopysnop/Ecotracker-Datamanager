@@ -33,8 +33,9 @@ public class CompaignController {
 
     @RequestMapping("/{id}")
     @ResponseBody
-    public Compaign findById(@PathVariable long id){
-       return compaignDAO.findById(id).get();
+    public CompaignDTO findById(@PathVariable long id){
+       Compaign compaign =  compaignDAO.findById(id).get();
+       return new CompaignDTO(compaign);
     }
 
     
@@ -49,7 +50,7 @@ public class CompaignController {
 
     }
 
-    @RequestMapping("/{id}/findObservations")
+    @RequestMapping("/{id}/observations")
     @ResponseBody
     public List<ObservationData> findObservationsWithId(@PathVariable long id){
         List<Observation> observationList = observationDAO.findByCompaignId(id);
