@@ -2,6 +2,7 @@ package application.ecoTracker.domain;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import application.ecoTracker.domain.utils.Location;
@@ -21,7 +22,6 @@ public class Compaign implements Serializable {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private List<TaxonomyGroup> groupsToIdentify;
-    private Location location;
 
     private List<Observation> observationList;
 
@@ -30,13 +30,13 @@ public class Compaign implements Serializable {
     }
 
     public Compaign(String name, String description, LocalDateTime startDate, LocalDateTime endDate,
-            List<TaxonomyGroup> groupsToIdentify, Location location) {
+            List<TaxonomyGroup> groupsToIdentify) {
         this.name = name;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
         this.groupsToIdentify = groupsToIdentify;
-        this.location = location;
+        this.observationList = new ArrayList<>();
     }
 
 
@@ -91,13 +91,6 @@ public class Compaign implements Serializable {
         this.groupsToIdentify = groupsToIdentify;
     }
 
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }
 
     @OneToMany(mappedBy  = "compaign")
     public List<Observation> getObservationList() {
@@ -108,12 +101,7 @@ public class Compaign implements Serializable {
         this.observationList = observationList;
     }
 
-    @Override
-    public String toString() {
-        return "Compaign [id=" + id + ", name=" + name + ", description=" + description + ", startDate=" + startDate
-                + ", endDate=" + endDate + ", groupsToIdentify=" + groupsToIdentify + ", location=" + location
-                + ", observationList=" + observationList + "]";
-    }
+
 
     
     

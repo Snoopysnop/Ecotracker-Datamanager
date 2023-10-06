@@ -3,7 +3,7 @@ package application.ecoTracker.service.DTO;
 import java.io.Serializable;
 import java.util.List;
 
-import application.ecoTracker.domain.utils.Location;
+import application.ecoTracker.domain.Compaign;
 import application.ecoTracker.domain.utils.TaxonomyGroup;
 
 public class CompaignDTO implements Serializable {
@@ -13,10 +13,18 @@ public class CompaignDTO implements Serializable {
     private String startDate;
     private String endDate;
     private List<TaxonomyGroup> groupsToIdentify;
-    private Location location;
 
     protected CompaignDTO() {
 
+    }
+
+    public CompaignDTO(Compaign compaign){
+        this.name = compaign.getName();
+        this.description = compaign.getDescription();
+        this.startDate = compaign.getStartDate().toString();
+        this.endDate = compaign.getEndDate().toString();
+        this.groupsToIdentify = compaign.getGroupsToIdentify();
+        
     }
 
     public String getName() {
@@ -57,16 +65,6 @@ public class CompaignDTO implements Serializable {
 
     public void setGroupsToIdentify(List<TaxonomyGroup> groupsToIdentify) {
         this.groupsToIdentify = groupsToIdentify;
-    }
-
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
-    
+    }    
     
 }
