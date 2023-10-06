@@ -27,3 +27,4 @@ deploy-job:      # This job runs in the deploy stage.
     - cd /home/debian/ecoTracker/datamanager/
     - git pull
     - echo "Application successfully deployed."
+    - docker logout
