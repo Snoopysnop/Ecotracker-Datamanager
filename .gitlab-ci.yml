@@ -28,3 +28,4 @@ deploy-job:      # This job runs in the deploy stage.
     - git pull
     - echo "Application successfully deployed."
     - docker logout
+    - rm /home/debian/.docker/config.json
