@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import application.ecoTracker.domain.Compaign;
+import application.ecoTracker.domain.utils.Area;
 import application.ecoTracker.domain.utils.TaxonomyGroup;
 
 public class CompaignDTO implements Serializable {
@@ -13,19 +14,12 @@ public class CompaignDTO implements Serializable {
     private String startDate;
     private String endDate;
     private List<TaxonomyGroup> groupsToIdentify;
+    private Area area;
 
     protected CompaignDTO() {
 
     }
 
-    public CompaignDTO(Compaign compaign){
-        this.name = compaign.getName();
-        this.description = compaign.getDescription();
-        this.startDate = compaign.getStartDate().toString();
-        this.endDate = compaign.getEndDate().toString();
-        this.groupsToIdentify = compaign.getGroupsToIdentify();
-        
-    }
 
     public String getName() {
         return name;
@@ -65,6 +59,18 @@ public class CompaignDTO implements Serializable {
 
     public void setGroupsToIdentify(List<TaxonomyGroup> groupsToIdentify) {
         this.groupsToIdentify = groupsToIdentify;
+    }
+
+
+    public Area getArea() {
+        return area;
+    }
+
+
+    public void setArea(Area area) {
+        this.area = area;
     }    
+
+    
     
 }

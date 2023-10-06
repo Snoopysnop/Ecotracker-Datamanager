@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import application.ecoTracker.domain.utils.Area;
 import application.ecoTracker.domain.utils.TaxonomyGroup;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,6 +22,7 @@ public class Compaign implements Serializable {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private List<TaxonomyGroup> groupsToIdentify;
+    private Area area;
 
     private List<Observation> observationList;
 
@@ -29,13 +31,14 @@ public class Compaign implements Serializable {
     }
 
     public Compaign(String name, String description, LocalDateTime startDate, LocalDateTime endDate,
-            List<TaxonomyGroup> groupsToIdentify) {
+            List<TaxonomyGroup> groupsToIdentify, Area area) {
         this.name = name;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
         this.groupsToIdentify = groupsToIdentify;
         this.observationList = new ArrayList<>();
+        this.area = area;
     }
 
 
@@ -88,6 +91,14 @@ public class Compaign implements Serializable {
 
     public void setGroupsToIdentify(List<TaxonomyGroup> groupsToIdentify) {
         this.groupsToIdentify = groupsToIdentify;
+    }
+
+    public Area getArea() {
+        return area;
+    }
+
+    public void setArea(Area area) {
+        this.area = area;
     }
 
 

@@ -2,12 +2,12 @@ package application.ecoTracker.domain.utils;
 
 import java.io.Serializable;
 
-public class Location implements Serializable {
+public class Area implements Serializable {
     
     private GPSCoordinates coordinates;
     private double radius;
 
-    protected Location() {
+    protected Area() {
 
     }
 
