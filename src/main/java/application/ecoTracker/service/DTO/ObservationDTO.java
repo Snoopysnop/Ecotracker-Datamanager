@@ -7,7 +7,7 @@ import application.ecoTracker.domain.utils.TaxonomyGroup;
 
 public class ObservationDTO implements Serializable {
 
-    private long author_id;
+    private String author_pseudo;
     private long compaign_id;
 
     private TaxonomyGroup taxonomyGroup;
@@ -19,12 +19,12 @@ public class ObservationDTO implements Serializable {
 
     }
 
-    public long getAuthor_id() {
-        return author_id;
+    public String getAuthor_pseudo() {
+        return author_pseudo;
     }
 
-    public void setAuthor_id(long author_id) {
-        this.author_id = author_id;
+    public void setAuthor_pseudo(String author_pseudo) {
+        this.author_pseudo = author_pseudo;
     }
 
     public TaxonomyGroup getTaxonomyGroup() {

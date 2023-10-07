@@ -8,5 +8,7 @@ import jakarta.transaction.Transactional;
 
 @Transactional
 public interface UserDAO extends JpaRepository<User, Long> {
+
+    public User findByPseudo(String pseudo);
     
 }

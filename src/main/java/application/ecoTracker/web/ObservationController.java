@@ -96,13 +96,9 @@ public class ObservationController {
     @ResponseBody
     public ObservationData create(@RequestBody ObservationDTO observationDTO){
 
-        User author;
-
-        try{
-            author = userDAO.findById(observationDTO.getAuthor_id()).get();
-        }
-        catch (Exception e) {
-            LOGGER.info("User " + observationDTO.getAuthor_id() + " not found");
+        User author = userDAO.findByPseudo(observationDTO.getAuthor_pseudo());
+        if(author == null) {
+            LOGGER.info("User " + observationDTO.getAuthor_pseudo() + " not found");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
 
