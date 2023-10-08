@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -94,7 +94,7 @@ public class ObservationController {
 
     @RequestMapping("/observation/create")
     @ResponseBody
-    public ObservationData create(@RequestBody ObservationDTO observationDTO){
+    public ObservationData create(@RequestPart("observationDTO") ObservationDTO observationDTO, @RequestPart("image") MultipartFile image){
 
         User author = userDAO.findByPseudo(observationDTO.getAuthor_pseudo());
         if(author == null) {
@@ -114,10 +114,20 @@ public class ObservationController {
         }
         
         Observation observation = new Observation(author, compaign, observationDTO.getTaxonomyGroup(), observationDTO.getTitle(), observationDTO.getLocation(), observationDTO.getDescription());
+
+        File pathFile = new File(imageFolder + observation.getId());
+        pathFile.mkdir();
+
+        try {
+            image.transferTo(new File(imageFolder + observation.getId() + "/0" + ".png"));
+        } catch (Exception e) {
+            LOGGER.warning("Error creating Observation " + observation);
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        } 
+
         observationDAO.save(observation);
 
-        File f = new File("./images/" + observation.getId());
-        f.mkdir();
 
         return new ObservationData(observation);
     }

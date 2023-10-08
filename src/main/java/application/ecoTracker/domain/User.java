@@ -52,14 +52,4 @@ public class User implements Serializable {
         this.observationList = observationList;
     }
 
-    @Override
-    public String toString() {
-        return "User [pseudo=" + pseudo + ", creationDate=" + creationDate + ", observationList="
-                + observationList + "]";
-    }
-
-
-    
-    
-
 }
