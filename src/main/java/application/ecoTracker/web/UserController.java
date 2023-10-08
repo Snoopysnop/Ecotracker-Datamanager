@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import application.ecoTracker.DAO.CompaignDAO;
 import application.ecoTracker.DAO.ObservationDAO;
 import application.ecoTracker.DAO.UserDAO;
+import application.ecoTracker.domain.Compaign;
 import application.ecoTracker.domain.Observation;
 import application.ecoTracker.domain.User;
 import application.ecoTracker.service.data.ObservationData;
@@ -30,6 +32,9 @@ public class UserController {
 
     @Autowired
     private ObservationDAO observationDAO;
+
+    @Autowired
+    private CompaignDAO compaignDAO;
     
 
     @RequestMapping("/users")
@@ -73,6 +78,32 @@ public class UserController {
 
     }
 
+    @RequestMapping("/user/{pseudo}/register")
+    @ResponseBody
+    public void registerToCompaign(@PathVariable String pseudo, @RequestBody String compaign_id){
+
+        User user = userDAO.findByPseudo(pseudo);
+        if(user == null) {
+            LOGGER.info("User " + pseudo + " not found");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        
+
+        Compaign compaign;
+        try {
+            compaign = compaignDAO.findById(Long.parseLong(compaign_id)).get();
+        } 
+        catch(Exception e){
+            LOGGER.info("Compaign " + compaign_id + " not found");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        
+        List<Compaign> userCompaigns = user.getCompaignList();
+        userCompaigns.add(compaign);
+        user.setCompaignList(userCompaigns);
+
+        userDAO.save(user);
+    }
 
 
 
