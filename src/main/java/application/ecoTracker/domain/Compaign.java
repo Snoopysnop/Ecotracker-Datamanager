@@ -10,6 +10,7 @@ import application.ecoTracker.domain.utils.TaxonomyGroup;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 
 @Entity
@@ -25,6 +26,7 @@ public class Compaign implements Serializable {
     private Area area;
 
     private List<Observation> observationList;
+    private List<User> userList;
 
     protected Compaign() {
 
@@ -111,7 +113,15 @@ public class Compaign implements Serializable {
         this.observationList = observationList;
     }
 
+    @ManyToMany
+    public List<User> getUserList() {
+        return userList;
+    }
 
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
+    }
+    
 
     
     
