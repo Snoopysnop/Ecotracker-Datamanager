@@ -114,6 +114,7 @@ public class ObservationController {
         }
         
         Observation observation = new Observation(author, compaign, observationDTO.getTaxonomyGroup(), observationDTO.getTitle(), observationDTO.getLocation(), observationDTO.getDescription());
+        observationDAO.save(observation);
 
         File pathFile = new File(imageFolder + observation.getId());
         pathFile.mkdir();
@@ -123,10 +124,10 @@ public class ObservationController {
         } catch (Exception e) {
             LOGGER.warning("Error creating Observation " + observation);
             e.printStackTrace();
+            observationDAO.delete(observation);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         } 
 
-        observationDAO.save(observation);
 
 
         return new ObservationData(observation);
