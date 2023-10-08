@@ -57,7 +57,7 @@ public class ObservationController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        return new ObservationData(observation);
+        return new ObservationData(observation, imageFolder);
     }
 
     @RequestMapping("/observations")
@@ -68,7 +68,7 @@ public class ObservationController {
         List<ObservationData> observationDataList = new ArrayList<>();
         for(Observation observation : observationList){
             try {
-                observationDataList.add(new ObservationData(observation));
+                observationDataList.add(new ObservationData(observation, imageFolder));
             }
             catch(Exception e){
                 LOGGER.warning("error getting observation " + observation.getId());
@@ -135,7 +135,7 @@ public class ObservationController {
 
 
 
-        return new ObservationData(observation);
+        return new ObservationData(observation, imageFolder);
     }
 
     
