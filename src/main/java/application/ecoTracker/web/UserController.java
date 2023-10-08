@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +28,9 @@ public class UserController {
 
     private static final Logger LOGGER = Logger.getLogger(ObservationController.class.getName());
 
+    @Value("${imageFolder}")
+    private String imageFolder;
+    
     @Autowired
     private UserDAO userDAO;
 
@@ -64,7 +68,7 @@ public class UserController {
         List<ObservationData> observationDataList = new ArrayList<>();
         for(Observation observation : observationList){
             try {
-                observationDataList.add(new ObservationData(observation));
+                observationDataList.add(new ObservationData(observation, imageFolder));
             }
             catch(Exception e){
                 LOGGER.warning("error getting observation " + observation.getId());

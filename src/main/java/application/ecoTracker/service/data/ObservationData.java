@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import application.ecoTracker.domain.Observation;
 
 public class ObservationData implements Serializable {
@@ -21,16 +19,12 @@ public class ObservationData implements Serializable {
     private String description;
     private LocalDateTime creationDate;
 
-    @Value("${imageFolder}")
-    private String imageFolder;
-
-
-    public ObservationData(Observation observation){
+    public ObservationData(Observation observation, String imageFolder){
         this.id = observation.getId();
         this.author = observation.getAuthor().getPseudo();
         this.taxonomyGroup = observation.getTaxonomyGroup().name();
         this.title = observation.getTitle();
-        this.imageList = new File("/home/mfouillen/cours/MMM/ecoTracker/datamanager/images/" + id + "/").list(); // TODO use imageFolder
+        this.imageList = new File(imageFolder + id + "/").list();
         this.location = observation.getLocation().toString();
         this.description = observation.getDescription();
         this.creationDate = observation.getCreationDate();
