@@ -112,6 +112,11 @@ public class ObservationController {
             LOGGER.info("Compaign " + observationDTO.getCompaign_id() + " not found");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
+
+        if(!author.getCompaignList().contains(compaign)){
+            LOGGER.info("User " + author.getPseudo() + " not registered in " + compaign.getId());
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
         
         Observation observation = new Observation(author, compaign, observationDTO.getTaxonomyGroup(), observationDTO.getTitle(), observationDTO.getLocation(), observationDTO.getDescription());
         observationDAO.save(observation);
