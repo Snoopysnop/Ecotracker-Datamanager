@@ -25,7 +25,6 @@ import application.ecoTracker.service.data.ObservationData;
 
 
 @RestController
-@RequestMapping("/compaign")
 public class CompaignController {
 
     private static final Logger LOGGER = Logger.getLogger(ObservationController.class.getName());
@@ -36,7 +35,7 @@ public class CompaignController {
     @Autowired
     private ObservationDAO observationDAO;
 
-    @RequestMapping("/{id}")
+    @RequestMapping("/compaign/{id}")
     @ResponseBody
     public CompaignDTO findById(@PathVariable long id){
 
@@ -53,8 +52,21 @@ public class CompaignController {
        return new CompaignDTO(compaign);
     }
 
+    @RequestMapping("/compaigns")
+    @ResponseBody
+    public List<CompaignDTO> findAll(){
+        List<Compaign> compaignList = compaignDAO.findAll();
+
+        List<CompaignDTO> compaignDTOList = new ArrayList<>();
+        for(Compaign compaign : compaignList) {
+            compaignDTOList.add(new CompaignDTO(compaign));
+        }
+
+        return compaignDTOList;
+    }
+
     
-    @RequestMapping("/create")
+    @RequestMapping("/compaign/create")
     @ResponseBody
     public CompaignDTO create(@RequestBody CompaignDTO compaignDTO) {
 
@@ -65,7 +77,7 @@ public class CompaignController {
 
     }
 
-    @RequestMapping("/{id}/observations")
+    @RequestMapping("/compaign/{id}/observations")
     @ResponseBody
     public List<ObservationData> findObservationsWithId(@PathVariable long id){
         List<Observation> observationList = observationDAO.findByCompaignId(id);
