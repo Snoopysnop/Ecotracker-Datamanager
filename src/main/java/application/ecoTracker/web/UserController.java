@@ -80,7 +80,7 @@ public class UserController {
 
     @RequestMapping("/user/{pseudo}/register")
     @ResponseBody
-    public User registerToCompaign(@PathVariable String pseudo, @RequestBody String compaign_id){
+    public void registerToCompaign(@PathVariable String pseudo, @RequestBody String compaign_id){
 
         User user = userDAO.findByPseudo(pseudo);
         if(user == null) {
@@ -103,8 +103,6 @@ public class UserController {
         user.setCompaignList(userCompaigns);
 
         userDAO.save(user);
-
-        return user;
     }
 
 
