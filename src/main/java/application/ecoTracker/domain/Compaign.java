@@ -11,6 +11,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
@@ -27,13 +28,14 @@ public class Compaign implements Serializable {
 
     private List<Observation> observationList;
     private List<User> userList;
+    private Organization organization;
 
     protected Compaign() {
 
     }
 
     public Compaign(String name, String description, LocalDateTime startDate, LocalDateTime endDate,
-            List<TaxonomyGroup> groupsToIdentify, Area area) {
+            List<TaxonomyGroup> groupsToIdentify, Area area, Organization organization) {
         this.name = name;
         this.description = description;
         this.startDate = startDate;
@@ -41,6 +43,7 @@ public class Compaign implements Serializable {
         this.groupsToIdentify = groupsToIdentify;
         this.observationList = new ArrayList<>();
         this.area = area;
+        this.organization = organization;
     }
 
 
@@ -121,7 +124,15 @@ public class Compaign implements Serializable {
     public void setUserList(List<User> userList) {
         this.userList = userList;
     }
-    
+
+    @ManyToOne
+    public Organization getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
+    }
 
     
     
