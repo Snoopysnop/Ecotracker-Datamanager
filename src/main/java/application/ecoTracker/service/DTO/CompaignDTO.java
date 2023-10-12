@@ -3,7 +3,6 @@ package application.ecoTracker.service.DTO;
 import java.io.Serializable;
 import java.util.List;
 
-import application.ecoTracker.domain.Compaign;
 import application.ecoTracker.domain.utils.Area;
 import application.ecoTracker.domain.utils.TaxonomyGroup;
 
@@ -18,15 +17,6 @@ public class CompaignDTO implements Serializable {
 
     protected CompaignDTO() {
 
-    }
-
-    public CompaignDTO(Compaign compaign){
-        this.name = compaign.getName();
-        this.description = compaign.getDescription();
-        this.startDate = compaign.getStartDate().toString();
-        this.endDate = compaign.getEndDate().toString();
-        this.groupsToIdentify = compaign.getGroupsToIdentify();
-        this.area = compaign.getArea();
     }
 
 
