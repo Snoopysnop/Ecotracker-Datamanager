@@ -17,7 +17,7 @@ public class User implements Serializable {
     private LocalDateTime creationDate;
 
     private List<Observation> observationList;
-    private List<Compaign> compaignList = new ArrayList<>();
+    private List<Campaign> campaignList = new ArrayList<>();
 
     protected User() {
         
@@ -56,11 +56,11 @@ public class User implements Serializable {
     }
 
     @ManyToMany()
-    public List<Compaign> getCompaignList() {
-        return compaignList;
+    public List<Campaign> getCampaignList() {
+        return campaignList;
     }
 
-    public void setCompaignList(List<Compaign> compaignList) {
-        this.compaignList = compaignList;
+    public void setCampaignList(List<Campaign> campaignList) {
+        this.campaignList = campaignList;
     }
 }

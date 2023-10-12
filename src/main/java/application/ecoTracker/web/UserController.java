@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import application.ecoTracker.DAO.CompaignDAO;
+import application.ecoTracker.DAO.CampaignDAO;
 import application.ecoTracker.DAO.ObservationDAO;
 import application.ecoTracker.DAO.UserDAO;
-import application.ecoTracker.domain.Compaign;
+import application.ecoTracker.domain.Campaign;
 import application.ecoTracker.domain.Observation;
 import application.ecoTracker.domain.User;
 import application.ecoTracker.service.data.ObservationData;
@@ -38,7 +38,7 @@ public class UserController {
     private ObservationDAO observationDAO;
 
     @Autowired
-    private CompaignDAO compaignDAO;
+    private CampaignDAO campaignDAO;
     
 
     @RequestMapping("/users")
@@ -84,7 +84,7 @@ public class UserController {
 
     @RequestMapping("/user/{pseudo}/register")
     @ResponseBody
-    public void registerToCompaign(@PathVariable String pseudo, @RequestBody String compaign_id){
+    public void registerToCampaign(@PathVariable String pseudo, @RequestBody String campaign_id){
 
         User user = userDAO.findByPseudo(pseudo);
         if(user == null) {
@@ -93,18 +93,18 @@ public class UserController {
         }
         
 
-        Compaign compaign;
+        Campaign campaign;
         try {
-            compaign = compaignDAO.findById(Long.parseLong(compaign_id)).get();
+            campaign = campaignDAO.findById(Long.parseLong(campaign_id)).get();
         } 
         catch(Exception e){
-            LOGGER.info("Compaign " + compaign_id + " not found");
+            LOGGER.info("Campaign " + campaign_id + " not found");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         
-        List<Compaign> userCompaigns = user.getCompaignList();
-        userCompaigns.add(compaign);
-        user.setCompaignList(userCompaigns);
+        List<Campaign> userCampaigns = user.getCampaignList();
+        userCampaigns.add(campaign);
+        user.setCampaignList(userCampaigns);
 
         userDAO.save(user);
     }

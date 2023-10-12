@@ -13,7 +13,7 @@ import org.springframework.data.jpa.repository.Query;
 @Transactional
 public interface ObservationDAO extends JpaRepository<Observation, Long> {
 
-    public List<Observation> findByCompaignId(Long id);
+    public List<Observation> findByCampaignId(Long id);
 
     @Query("Select o from Observation o where o.author.pseudo = ?1")
     public List<Observation> findByUserPseudo(String pseudo);

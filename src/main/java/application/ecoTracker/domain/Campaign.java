@@ -15,7 +15,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
-public class Compaign implements Serializable {
+public class Campaign implements Serializable {
 
     private Long id;
     
@@ -30,11 +30,11 @@ public class Compaign implements Serializable {
     private List<User> userList;
     private Organization organization;
 
-    protected Compaign() {
+    protected Campaign() {
 
     }
 
-    public Compaign(String name, String description, LocalDateTime startDate, LocalDateTime endDate,
+    public Campaign(String name, String description, LocalDateTime startDate, LocalDateTime endDate,
             List<TaxonomyGroup> groupsToIdentify, Area area, Organization organization) {
         this.name = name;
         this.description = description;
@@ -107,7 +107,7 @@ public class Compaign implements Serializable {
     }
 
 
-    @OneToMany(mappedBy  = "compaign")
+    @OneToMany(mappedBy  = "campaign")
     public List<Observation> getObservationList() {
         return observationList;
     }

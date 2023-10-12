@@ -3,11 +3,11 @@ package application.ecoTracker.service.data;
 import java.io.Serializable;
 import java.util.List;
 
-import application.ecoTracker.domain.Compaign;
+import application.ecoTracker.domain.Campaign;
 import application.ecoTracker.domain.utils.Area;
 import application.ecoTracker.domain.utils.TaxonomyGroup;
 
-public class CompaignData implements Serializable {
+public class CampaignData implements Serializable {
     
     private long id;
     private String name;
@@ -19,15 +19,15 @@ public class CompaignData implements Serializable {
 
     private String organization_name;
 
-    public CompaignData(Compaign compaign) {
-        this.id = compaign.getId();
-        this.name = compaign.getName();
-        this.description = compaign.getDescription();
-        this.startDate = compaign.getStartDate().toString();
-        this.endDate = compaign.getEndDate().toString();
-        this.groupsToIdentify = compaign.getGroupsToIdentify();
-        this.area = compaign.getArea();
-        this.organization_name = compaign.getOrganization().getName();
+    public CampaignData(Campaign campaign) {
+        this.id = campaign.getId();
+        this.name = campaign.getName();
+        this.description = campaign.getDescription();
+        this.startDate = campaign.getStartDate().toString();
+        this.endDate = campaign.getEndDate().toString();
+        this.groupsToIdentify = campaign.getGroupsToIdentify();
+        this.area = campaign.getArea();
+        this.organization_name = campaign.getOrganization().getName();
     }
 
     public long getId() {

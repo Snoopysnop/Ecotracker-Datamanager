@@ -14,7 +14,7 @@ public class Organization implements Serializable {
     private Long id;
     private String name;
 
-    private List<Compaign> compaignList;
+    private List<Campaign> campaignList;
 
     protected Organization(){
 
@@ -43,12 +43,12 @@ public class Organization implements Serializable {
     }
 
     @OneToMany(mappedBy  = "organization")
-    public List<Compaign> getCompaignList() {
-        return compaignList;
+    public List<Campaign> getCampaignList() {
+        return campaignList;
     }
 
-    public void setCompaignList(List<Compaign> compaignList) {
-        this.compaignList = compaignList;
+    public void setCampaignList(List<Campaign> campaignList) {
+        this.campaignList = campaignList;
     }
 
 }

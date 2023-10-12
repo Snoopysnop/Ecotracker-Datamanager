@@ -16,7 +16,7 @@ public class Observation implements Serializable {
     private long id;
 
     private User author;
-    private Compaign compaign ;
+    private Campaign campaign ;
 
     private TaxonomyGroup taxonomyGroup;
     private String title;
@@ -31,10 +31,10 @@ public class Observation implements Serializable {
 
     }
 
-    public Observation(User author, Compaign compaign, TaxonomyGroup taxonomyGroup, String title,
+    public Observation(User author, Campaign campaign, TaxonomyGroup taxonomyGroup, String title,
             GPSCoordinates location, String description) {
         this.author = author;
-        this.compaign = compaign;
+        this.campaign = campaign;
         this.taxonomyGroup = taxonomyGroup;
         this.title = title;
         this.location = location;
@@ -62,12 +62,12 @@ public class Observation implements Serializable {
     }
 
     @ManyToOne
-    public Compaign getCompaign() {
-        return compaign;
+    public Campaign getCampaign() {
+        return campaign;
     }
 
-    public void setCompaign(Compaign compaign) {
-        this.compaign = compaign;
+    public void setCampaign(Campaign campaign) {
+        this.campaign = campaign;
     }
 
     public TaxonomyGroup getTaxonomyGroup() {

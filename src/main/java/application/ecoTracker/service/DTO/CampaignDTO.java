@@ -6,7 +6,7 @@ import java.util.List;
 import application.ecoTracker.domain.utils.Area;
 import application.ecoTracker.domain.utils.TaxonomyGroup;
 
-public class CompaignDTO implements Serializable {
+public class CampaignDTO implements Serializable {
 
     private String name;
     private String description;
@@ -17,7 +17,7 @@ public class CompaignDTO implements Serializable {
 
     private long organization_id;
 
-    protected CompaignDTO() {
+    protected CampaignDTO() {
 
     }
 

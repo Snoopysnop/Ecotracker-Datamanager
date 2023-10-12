@@ -16,20 +16,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import application.ecoTracker.DAO.CompaignDAO;
+import application.ecoTracker.DAO.CampaignDAO;
 import application.ecoTracker.DAO.ObservationDAO;
 import application.ecoTracker.DAO.OrganizationDAO;
-import application.ecoTracker.domain.Compaign;
+import application.ecoTracker.domain.Campaign;
 import application.ecoTracker.domain.Observation;
 import application.ecoTracker.domain.Organization;
-import application.ecoTracker.service.DTO.CompaignDTO;
-import application.ecoTracker.service.data.CompaignData;
+import application.ecoTracker.service.DTO.CampaignDTO;
+import application.ecoTracker.service.data.CampaignData;
 import application.ecoTracker.service.data.ObservationData;
 
 
 
 @RestController
-public class CompaignController {
+public class CampaignController {
 
     private static final Logger LOGGER = Logger.getLogger(ObservationController.class.getName());
 
@@ -37,7 +37,7 @@ public class CompaignController {
     private String imageFolder;
 
     @Autowired
-    private CompaignDAO compaignDAO;
+    private CampaignDAO campaignDAO;
 
     @Autowired
     private ObservationDAO observationDAO;
@@ -45,71 +45,71 @@ public class CompaignController {
     @Autowired
     private OrganizationDAO organizationDAO;
 
-    @RequestMapping("/compaign/{id}")
+    @RequestMapping("/campaign/{id}")
     @ResponseBody
-    public CompaignData findById(@PathVariable long id){
+    public CampaignData findById(@PathVariable long id){
 
-        Compaign compaign;
+        Campaign campaign;
         try{
-            compaign =  compaignDAO.findById(id).get();
+            campaign =  campaignDAO.findById(id).get();
         }
 
         catch (Exception exception) {
-            LOGGER.info("Compaign " + id + " not found");
+            LOGGER.info("Campaign " + id + " not found");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         
-       return new CompaignData(compaign);
+       return new CampaignData(campaign);
     }
 
-    @RequestMapping("/compaigns")
+    @RequestMapping("/campaigns")
     @ResponseBody
-    public List<CompaignData> findAll(){
-        List<Compaign> compaignList = compaignDAO.findAll();
+    public List<CampaignData> findAll(){
+        List<Campaign> campaignList = campaignDAO.findAll();
 
-        List<CompaignData> compaignDataList = new ArrayList<>();
-        for(Compaign compaign : compaignList) {
+        List<CampaignData> campaignDataList = new ArrayList<>();
+        for(Campaign campaign : campaignList) {
             try{
-                compaignDataList.add(new CompaignData(compaign));
+                campaignDataList.add(new CampaignData(campaign));
             }
             catch(Exception e){
-                LOGGER.warning("error getting compaign " + compaign.getId());
+                LOGGER.warning("error getting campaign " + campaign.getId());
                 LOGGER.warning(e.toString());
             }
             
         }
 
-        return compaignDataList;
+        return campaignDataList;
     }
 
     
-    @RequestMapping("/compaign/create")
+    @RequestMapping("/campaign/create")
     @ResponseBody
-    public CompaignDTO create(@RequestBody CompaignDTO compaignDTO) {
+    public CampaignDTO create(@RequestBody CampaignDTO campaignDTO) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         
         Organization organization;
 
         try{
-            organization = organizationDAO.findById(compaignDTO.getOrganization_id()).get();
+            organization = organizationDAO.findById(campaignDTO.getOrganization_id()).get();
         }
 
         catch (Exception e) {
-            LOGGER.info("organization " + compaignDTO.getOrganization_id() + " not found");
+            LOGGER.info("organization " + campaignDTO.getOrganization_id() + " not found");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
 
-        Compaign compaign = new Compaign(compaignDTO.getName(), compaignDTO.getDescription(), LocalDateTime.parse(compaignDTO.getStartDate(), formatter), LocalDateTime.parse(compaignDTO.getEndDate(), formatter), compaignDTO.getGroupsToIdentify(), compaignDTO.getArea(), organization);
-        compaignDAO.save(compaign);
-        return compaignDTO;
+        Campaign campaign = new Campaign(campaignDTO.getName(), campaignDTO.getDescription(), LocalDateTime.parse(campaignDTO.getStartDate(), formatter), LocalDateTime.parse(campaignDTO.getEndDate(), formatter), campaignDTO.getGroupsToIdentify(), campaignDTO.getArea(), organization);
+        campaignDAO.save(campaign);
+        return campaignDTO;
 
     }
 
-    @RequestMapping("/compaign/{id}/observations")
+    @RequestMapping("/campaign/{id}/observations")
     @ResponseBody
     public List<ObservationData> findObservationsWithId(@PathVariable long id){
-        List<Observation> observationList = observationDAO.findByCompaignId(id);
+        List<Observation> observationList = observationDAO.findByCampaignId(id);
 
         List<ObservationData> observationDataList = new ArrayList<>();
         for(Observation observation : observationList){

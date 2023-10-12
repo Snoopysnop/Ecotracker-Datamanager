@@ -18,9 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import application.ecoTracker.DAO.UserDAO;
-import application.ecoTracker.DAO.CompaignDAO;
+import application.ecoTracker.DAO.CampaignDAO;
 import application.ecoTracker.DAO.ObservationDAO;
-import application.ecoTracker.domain.Compaign;
+import application.ecoTracker.domain.Campaign;
 import application.ecoTracker.domain.Observation;
 import application.ecoTracker.domain.User;
 import application.ecoTracker.service.DTO.ObservationDTO;
@@ -41,7 +41,7 @@ public class ObservationController {
     private UserDAO userDAO;
 
     @Autowired
-    private CompaignDAO compaignDAO;
+    private CampaignDAO campaignDAO;
 
     @RequestMapping("/observation/{id}")
     @ResponseBody
@@ -102,23 +102,23 @@ public class ObservationController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
 
-        Compaign compaign;
+        Campaign campaign;
 
         try{
-            compaign = compaignDAO.findById(observationDTO.getCompaign_id()).get();
-            LOGGER.info(compaign.toString());
+            campaign = campaignDAO.findById(observationDTO.getCampaign_id()).get();
+            LOGGER.info(campaign.toString());
         }
         catch (Exception e) {
-            LOGGER.info("Compaign " + observationDTO.getCompaign_id() + " not found");
+            LOGGER.info("Campaign " + observationDTO.getCampaign_id() + " not found");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
 
-        if(!author.getCompaignList().contains(compaign)){
-            LOGGER.info("User " + author.getPseudo() + " not registered in " + compaign.getId());
+        if(!author.getCampaignList().contains(campaign)){
+            LOGGER.info("User " + author.getPseudo() + " not registered in " + campaign.getId());
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
         
-        Observation observation = new Observation(author, compaign, observationDTO.getTaxonomyGroup(), observationDTO.getTitle(), observationDTO.getLocation(), observationDTO.getDescription());
+        Observation observation = new Observation(author, campaign, observationDTO.getTaxonomyGroup(), observationDTO.getTitle(), observationDTO.getLocation(), observationDTO.getDescription());
         observationDAO.save(observation);
 
         File pathFile = new File(imageFolder + observation.getId());
