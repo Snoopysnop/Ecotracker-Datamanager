@@ -21,6 +21,7 @@ import application.ecoTracker.DAO.ObservationDAO;
 import application.ecoTracker.domain.Compaign;
 import application.ecoTracker.domain.Observation;
 import application.ecoTracker.service.DTO.CompaignDTO;
+import application.ecoTracker.service.data.CompaignData;
 import application.ecoTracker.service.data.ObservationData;
 
 
@@ -41,7 +42,7 @@ public class CompaignController {
 
     @RequestMapping("/compaign/{id}")
     @ResponseBody
-    public CompaignDTO findById(@PathVariable long id){
+    public CompaignData findById(@PathVariable long id){
 
         Compaign compaign;
         try{
@@ -53,20 +54,20 @@ public class CompaignController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         
-       return new CompaignDTO(compaign);
+       return new CompaignData(compaign);
     }
 
     @RequestMapping("/compaigns")
     @ResponseBody
-    public List<CompaignDTO> findAll(){
+    public List<CompaignData> findAll(){
         List<Compaign> compaignList = compaignDAO.findAll();
 
-        List<CompaignDTO> compaignDTOList = new ArrayList<>();
+        List<CompaignData> compaignDataList = new ArrayList<>();
         for(Compaign compaign : compaignList) {
-            compaignDTOList.add(new CompaignDTO(compaign));
+            compaignDataList.add(new CompaignData(compaign));
         }
 
-        return compaignDTOList;
+        return compaignDataList;
     }
 
     
