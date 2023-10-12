@@ -17,6 +17,8 @@ public class CompaignData implements Serializable {
     private List<TaxonomyGroup> groupsToIdentify;
     private Area area;
 
+    private String organization_name;
+
     public CompaignData(Compaign compaign) {
         this.id = compaign.getId();
         this.name = compaign.getName();
@@ -25,6 +27,7 @@ public class CompaignData implements Serializable {
         this.endDate = compaign.getEndDate().toString();
         this.groupsToIdentify = compaign.getGroupsToIdentify();
         this.area = compaign.getArea();
+        this.organization_name = compaign.getOrganization().getName();
     }
 
     public long getId() {
@@ -69,5 +72,12 @@ public class CompaignData implements Serializable {
     public void setArea(Area area) {
         this.area = area;
     }
+    public String getOrganization_name() {
+        return organization_name;
+    }
+    public void setOrganization_name(String organization_name) {
+        this.organization_name = organization_name;
+    }
+    
 
 }

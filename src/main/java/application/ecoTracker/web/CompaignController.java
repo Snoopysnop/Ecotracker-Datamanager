@@ -18,8 +18,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import application.ecoTracker.DAO.CompaignDAO;
 import application.ecoTracker.DAO.ObservationDAO;
+import application.ecoTracker.DAO.OrganizationDAO;
 import application.ecoTracker.domain.Compaign;
 import application.ecoTracker.domain.Observation;
+import application.ecoTracker.domain.Organization;
 import application.ecoTracker.service.DTO.CompaignDTO;
 import application.ecoTracker.service.data.CompaignData;
 import application.ecoTracker.service.data.ObservationData;
@@ -39,6 +41,9 @@ public class CompaignController {
 
     @Autowired
     private ObservationDAO observationDAO;
+
+    @Autowired
+    private OrganizationDAO organizationDAO;
 
     @RequestMapping("/compaign/{id}")
     @ResponseBody
@@ -64,7 +69,14 @@ public class CompaignController {
 
         List<CompaignData> compaignDataList = new ArrayList<>();
         for(Compaign compaign : compaignList) {
-            compaignDataList.add(new CompaignData(compaign));
+            try{
+                compaignDataList.add(new CompaignData(compaign));
+            }
+            catch(Exception e){
+                LOGGER.warning("error getting compaign " + compaign.getId());
+                LOGGER.warning(e.toString());
+            }
+            
         }
 
         return compaignDataList;
@@ -76,7 +88,19 @@ public class CompaignController {
     public CompaignDTO create(@RequestBody CompaignDTO compaignDTO) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        Compaign compaign = new Compaign(compaignDTO.getName(), compaignDTO.getDescription(), LocalDateTime.parse(compaignDTO.getStartDate(), formatter), LocalDateTime.parse(compaignDTO.getEndDate(), formatter), compaignDTO.getGroupsToIdentify(), compaignDTO.getArea());
+        
+        Organization organization;
+
+        try{
+            organization = organizationDAO.findById(compaignDTO.getOrganization_id()).get();
+        }
+
+        catch (Exception e) {
+            LOGGER.info("organization " + compaignDTO.getOrganization_id() + " not found");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        Compaign compaign = new Compaign(compaignDTO.getName(), compaignDTO.getDescription(), LocalDateTime.parse(compaignDTO.getStartDate(), formatter), LocalDateTime.parse(compaignDTO.getEndDate(), formatter), compaignDTO.getGroupsToIdentify(), compaignDTO.getArea(), organization);
         compaignDAO.save(compaign);
         return compaignDTO;
 

@@ -15,6 +15,8 @@ public class CompaignDTO implements Serializable {
     private List<TaxonomyGroup> groupsToIdentify;
     private Area area;
 
+    private long organization_id;
+
     protected CompaignDTO() {
 
     }
@@ -68,7 +70,16 @@ public class CompaignDTO implements Serializable {
 
     public void setArea(Area area) {
         this.area = area;
-    }    
+    }
+
+    public long getOrganization_id() {
+        return organization_id;
+    }
+
+
+    public void setOrganization_id(long organization_id) {
+        this.organization_id = organization_id;
+    }
 
     
     
