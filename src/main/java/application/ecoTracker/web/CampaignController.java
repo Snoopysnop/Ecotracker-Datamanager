@@ -1,5 +1,6 @@
 package application.ecoTracker.web;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -12,8 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import application.ecoTracker.DAO.CampaignDAO;
@@ -35,6 +38,9 @@ public class CampaignController {
 
     @Value("${observationsImageFolder}")
     private String observationsImageFolder;
+
+    @Value("${campaignsImageFolder}")
+    private String campaignsImageFolder;
 
     @Autowired
     private CampaignDAO campaignDAO;
@@ -59,7 +65,7 @@ public class CampaignController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         
-       return new CampaignData(campaign);
+       return new CampaignData(campaign, campaignsImageFolder);
     }
 
     @RequestMapping("/campaigns")
@@ -70,7 +76,7 @@ public class CampaignController {
         List<CampaignData> campaignDataList = new ArrayList<>();
         for(Campaign campaign : campaignList) {
             try{
-                campaignDataList.add(new CampaignData(campaign));
+                campaignDataList.add(new CampaignData(campaign, campaignsImageFolder));
             }
             catch(Exception e){
                 LOGGER.warning("error getting campaign " + campaign.getId());
@@ -85,7 +91,7 @@ public class CampaignController {
     
     @RequestMapping("/campaign/create")
     @ResponseBody
-    public CampaignDTO create(@RequestBody CampaignDTO campaignDTO) {
+    public CampaignData create(@RequestPart("campaign") CampaignDTO campaignDTO, @RequestPart("image") MultipartFile image) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         
@@ -102,7 +108,21 @@ public class CampaignController {
 
         Campaign campaign = new Campaign(campaignDTO.getName(), campaignDTO.getDescription(), LocalDateTime.parse(campaignDTO.getStartDate(), formatter), LocalDateTime.parse(campaignDTO.getEndDate(), formatter), campaignDTO.getGroupsToIdentify(), campaignDTO.getArea(), organization);
         campaignDAO.save(campaign);
-        return campaignDTO;
+
+        // save image
+        File pathFile = new File(campaignsImageFolder + campaign.getId());
+        pathFile.mkdir();
+
+        try {
+            image.transferTo(new File(campaignsImageFolder + campaign.getId() + "/image" + ".png"));
+        } catch (Exception e) {
+            LOGGER.warning("Error creating campaign " + campaign);
+            e.printStackTrace();
+            campaignDAO.delete(campaign);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        
+        return new CampaignData(campaign, campaignsImageFolder);
 
     }
 
