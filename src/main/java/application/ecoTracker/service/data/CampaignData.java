@@ -1,5 +1,6 @@
 package application.ecoTracker.service.data;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.List;
 
@@ -16,10 +17,11 @@ public class CampaignData implements Serializable {
     private String endDate;
     private List<TaxonomyGroup> groupsToIdentify;
     private Area area;
+    private String imageLocation;
 
     private String organization_name;
 
-    public CampaignData(Campaign campaign) {
+    public CampaignData(Campaign campaign, String campaignsImageFolder) {
         this.id = campaign.getId();
         this.name = campaign.getName();
         this.description = campaign.getDescription();
@@ -28,6 +30,7 @@ public class CampaignData implements Serializable {
         this.groupsToIdentify = campaign.getGroupsToIdentify();
         this.area = campaign.getArea();
         this.organization_name = campaign.getOrganization().getName();
+        this.imageLocation = campaignsImageFolder + this.id + "/" + new File(campaignsImageFolder + this.id + "/").list()[0];
     }
 
     public long getId() {
@@ -77,6 +80,12 @@ public class CampaignData implements Serializable {
     }
     public void setOrganization_name(String organization_name) {
         this.organization_name = organization_name;
+    }
+    public String getImageLocation() {
+        return imageLocation;
+    }
+    public void setImageLocation(String imageLocation) {
+        this.imageLocation = imageLocation;
     }
     
 

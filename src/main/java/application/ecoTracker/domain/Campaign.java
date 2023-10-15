@@ -25,6 +25,7 @@ public class Campaign implements Serializable {
     private LocalDateTime endDate;
     private List<TaxonomyGroup> groupsToIdentify;
     private Area area;
+    private String imageLocation;
 
     private List<Observation> observationList;
     private List<User> userList;
@@ -132,6 +133,14 @@ public class Campaign implements Serializable {
 
     public void setOrganization(Organization organization) {
         this.organization = organization;
+    }
+
+    public String getImageLocation() {
+        return imageLocation;
+    }
+
+    public void setImageLocation(String imageLocation) {
+        this.imageLocation = imageLocation;
     }
 
     
