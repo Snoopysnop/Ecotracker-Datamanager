@@ -28,8 +28,8 @@ public class UserController {
 
     private static final Logger LOGGER = Logger.getLogger(ObservationController.class.getName());
 
-    @Value("${imageFolder}")
-    private String imageFolder;
+    @Value("${observationsImageFolder}")
+    private String observationsImageFolder;
     
     @Autowired
     private UserDAO userDAO;
@@ -68,7 +68,7 @@ public class UserController {
         List<ObservationData> observationDataList = new ArrayList<>();
         for(Observation observation : observationList){
             try {
-                observationDataList.add(new ObservationData(observation, imageFolder));
+                observationDataList.add(new ObservationData(observation, observationsImageFolder));
             }
             catch(Exception e){
                 LOGGER.warning("error getting observation " + observation.getId());
