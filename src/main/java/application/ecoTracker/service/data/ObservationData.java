@@ -19,12 +19,12 @@ public class ObservationData implements Serializable {
     private String description;
     private LocalDateTime creationDate;
 
-    public ObservationData(Observation observation, String imageFolder){
+    public ObservationData(Observation observation, String observationsImageFolder){
         this.id = observation.getId();
         this.author = observation.getAuthor().getPseudo();
         this.taxonomyGroup = observation.getTaxonomyGroup().name();
         this.title = observation.getTitle();
-        this.imageList = new File(imageFolder + id + "/").list();
+        this.imageList = new File(observationsImageFolder + id + "/").list();
         this.location = observation.getLocation().toString();
         this.description = observation.getDescription();
         this.creationDate = observation.getCreationDate();

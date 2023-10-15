@@ -31,8 +31,8 @@ public class ObservationController {
 
     private static final Logger LOGGER = Logger.getLogger(ObservationController.class.getName());
 
-    @Value("${imageFolder}")
-    private String imageFolder;
+    @Value("${observationsImageFolder}")
+    private String observationsImageFolder;
 
     @Autowired
     private ObservationDAO observationDAO;
@@ -57,7 +57,7 @@ public class ObservationController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        return new ObservationData(observation, imageFolder);
+        return new ObservationData(observation, observationsImageFolder);
     }
 
     @RequestMapping("/observations")
@@ -68,7 +68,7 @@ public class ObservationController {
         List<ObservationData> observationDataList = new ArrayList<>();
         for(Observation observation : observationList){
             try {
-                observationDataList.add(new ObservationData(observation, imageFolder));
+                observationDataList.add(new ObservationData(observation, observationsImageFolder));
             }
             catch(Exception e){
                 LOGGER.warning("error getting observation " + observation.getId());
@@ -84,8 +84,8 @@ public class ObservationController {
     @ResponseBody
     public void uploadImage(@PathVariable long id, @RequestParam("image") MultipartFile image){
         try {
-            File path = new File(imageFolder + id + "/");
-            image.transferTo(new File(imageFolder + id + "/" + path.list().length + ".png")); 
+            File path = new File(observationsImageFolder + id + "/");
+            image.transferTo(new File(observationsImageFolder + id + "/" + path.list().length + ".png")); 
         } catch (Exception e) {
             LOGGER.info("Can't upload for observation " + id);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
@@ -121,11 +121,11 @@ public class ObservationController {
         Observation observation = new Observation(author, campaign, observationDTO.getTaxonomyGroup(), observationDTO.getTitle(), observationDTO.getLocation(), observationDTO.getDescription());
         observationDAO.save(observation);
 
-        File pathFile = new File(imageFolder + observation.getId());
+        File pathFile = new File(observationsImageFolder + observation.getId());
         pathFile.mkdir();
 
         try {
-            image.transferTo(new File(imageFolder + observation.getId() + "/0" + ".png"));
+            image.transferTo(new File(observationsImageFolder + observation.getId() + "/0" + ".png"));
         } catch (Exception e) {
             LOGGER.warning("Error creating Observation " + observation);
             e.printStackTrace();
@@ -135,7 +135,7 @@ public class ObservationController {
 
 
 
-        return new ObservationData(observation, imageFolder);
+        return new ObservationData(observation, observationsImageFolder);
     }
 
     

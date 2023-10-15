@@ -33,8 +33,8 @@ public class CampaignController {
 
     private static final Logger LOGGER = Logger.getLogger(ObservationController.class.getName());
 
-    @Value("${imageFolder}")
-    private String imageFolder;
+    @Value("${observationsImageFolder}")
+    private String observationsImageFolder;
 
     @Autowired
     private CampaignDAO campaignDAO;
@@ -113,7 +113,7 @@ public class CampaignController {
 
         List<ObservationData> observationDataList = new ArrayList<>();
         for(Observation observation : observationList){
-            observationDataList.add(new ObservationData(observation, imageFolder));
+            observationDataList.add(new ObservationData(observation, observationsImageFolder));
         }
 
         return observationDataList;
