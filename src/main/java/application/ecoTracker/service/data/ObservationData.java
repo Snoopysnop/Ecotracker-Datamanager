@@ -3,6 +3,8 @@ package application.ecoTracker.service.data;
 import java.io.File;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import application.ecoTracker.domain.Observation;
 
@@ -14,7 +16,7 @@ public class ObservationData implements Serializable {
 
     private String taxonomyGroup;
     private String title;
-    private String[] imageList;
+    private List<String> imageList;
     private String location;
     private String description;
     private LocalDateTime creationDate;
@@ -24,7 +26,13 @@ public class ObservationData implements Serializable {
         this.author = observation.getAuthor().getPseudo();
         this.taxonomyGroup = observation.getTaxonomyGroup().name();
         this.title = observation.getTitle();
-        this.imageList = new File(observationsImageFolder + id + "/").list();
+
+        this.imageList = new ArrayList<>();
+        String[]  imageFiles = new File(observationsImageFolder + id + "/").list();
+        for(String imageFile : imageFiles){
+            imageList.add(observationsImageFolder + this.id + "/" + imageFile);
+        }
+
         this.location = observation.getLocation().toString();
         this.description = observation.getDescription();
         this.creationDate = observation.getCreationDate();
@@ -49,10 +57,10 @@ public class ObservationData implements Serializable {
     public void setTitle(String title) {
         this.title = title;
     }
-    public String[] getImageList() {
+    public List<String> getImageList() {
         return imageList;
     }
-    public void setImageList(String[] imageList) {
+    public void setImageList(List<String> imageList) {
         this.imageList = imageList;
     }
     public String getLocation() {
