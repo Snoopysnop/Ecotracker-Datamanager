@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +29,7 @@ import application.ecoTracker.domain.Organization;
 import application.ecoTracker.service.DTO.CampaignDTO;
 import application.ecoTracker.service.data.CampaignData;
 import application.ecoTracker.service.data.ObservationData;
+import io.swagger.v3.oas.annotations.Operation;
 
 
 
@@ -51,8 +53,12 @@ public class CampaignController {
     @Autowired
     private OrganizationDAO organizationDAO;
 
-    @RequestMapping("/campaign/{id}")
+    @RequestMapping(value = "/campaign/{id}", method = RequestMethod.GET)
     @ResponseBody
+    @Operation(
+        tags = {"Campaign"},
+        description = "Returns the campaign {id}"
+    )
     public CampaignData findById(@PathVariable long id){
 
         Campaign campaign;
@@ -68,8 +74,12 @@ public class CampaignController {
        return new CampaignData(campaign, campaignsImageFolder);
     }
 
-    @RequestMapping("/campaigns")
+    @RequestMapping(value = "/campaigns", method = RequestMethod.GET)
     @ResponseBody
+    @Operation(
+        tags = {"Campaign"},
+        description = "Returns all campaigns"
+    )
     public List<CampaignData> findAll(){
         List<Campaign> campaignList = campaignDAO.findAll();
 
@@ -89,8 +99,12 @@ public class CampaignController {
     }
 
     
-    @RequestMapping("/campaign/create")
+    @RequestMapping(value = "/campaign/create", method = RequestMethod.POST)
     @ResponseBody
+    @Operation(
+        tags = {"Campaign"},
+        description = "Create a campaign"
+    )
     public CampaignData create(@RequestPart("campaign") CampaignDTO campaignDTO, @RequestPart("image") MultipartFile image) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -126,8 +140,12 @@ public class CampaignController {
 
     }
 
-    @RequestMapping("/campaign/{id}/observations")
+    @RequestMapping(value = "/campaign/{id}/observations", method = RequestMethod.GET)
     @ResponseBody
+    @Operation(
+        tags = {"Campaign"},
+        description = "Returns all observations for the campaign {id}"
+    )
     public List<ObservationData> findObservationsWithId(@PathVariable long id){
         List<Observation> observationList = observationDAO.findByCampaignId(id);
 

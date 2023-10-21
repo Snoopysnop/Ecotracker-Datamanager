@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -21,6 +22,7 @@ import application.ecoTracker.domain.Campaign;
 import application.ecoTracker.domain.Observation;
 import application.ecoTracker.domain.User;
 import application.ecoTracker.service.data.ObservationData;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping()
@@ -41,14 +43,22 @@ public class UserController {
     private CampaignDAO campaignDAO;
     
 
-    @RequestMapping("/users")
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
     @ResponseBody
+    @Operation(
+        tags = {"User"},
+        description = "Returns all users"
+    )
     public List<User> findAll() {
         return userDAO.findAll();
     }
 
-    @RequestMapping("/user/create")
+    @RequestMapping(value = "/user/create", method = RequestMethod.POST)
     @ResponseBody
+    @Operation(
+        tags = {"User"},
+        description = "Create an user"
+    )
     public User create(@RequestBody String pseudo){
 
         if(userDAO.findByPseudo(pseudo) == null){
@@ -60,8 +70,12 @@ public class UserController {
         throw new ResponseStatusException(HttpStatus.CONFLICT);
     }
 
-    @RequestMapping("/user/{pseudo}/observations")
+    @RequestMapping(value = "/user/{pseudo}/observations", method = RequestMethod.GET)
     @ResponseBody
+    @Operation(
+        tags = {"User"},
+        description = "Returns all observations made by user"
+    )
     public List<ObservationData> findUserObservations(@PathVariable String pseudo){
         List<Observation> observationList = observationDAO.findByUserPseudo(pseudo);
 
@@ -82,8 +96,12 @@ public class UserController {
 
     }
 
-    @RequestMapping("/user/{pseudo}/register")
+    @RequestMapping(value = "/user/{pseudo}/register", method = RequestMethod.PUT)
     @ResponseBody
+    @Operation(
+        tags = {"User"},
+        description = "Register user to campaign"
+    )
     public void registerToCampaign(@PathVariable String pseudo, @RequestBody String campaign_id){
 
         User user = userDAO.findByPseudo(pseudo);
