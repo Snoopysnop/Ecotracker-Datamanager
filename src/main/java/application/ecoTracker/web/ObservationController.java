@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,6 +26,7 @@ import application.ecoTracker.domain.Observation;
 import application.ecoTracker.domain.User;
 import application.ecoTracker.service.DTO.ObservationDTO;
 import application.ecoTracker.service.data.ObservationData;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 public class ObservationController {
@@ -43,8 +45,12 @@ public class ObservationController {
     @Autowired
     private CampaignDAO campaignDAO;
 
-    @RequestMapping("/observation/{id}")
+    @RequestMapping(value = "/observation/{id}", method = RequestMethod.GET)
     @ResponseBody
+    @Operation(
+        tags = {"Observation"},
+        description = "Returns the campaign {id}"
+    )
     public ObservationData findById(@PathVariable long id){
 
         Observation observation;
@@ -60,8 +66,12 @@ public class ObservationController {
         return new ObservationData(observation, observationsImageFolder);
     }
 
-    @RequestMapping("/observations")
+    @RequestMapping(value = "/observations", method = RequestMethod.GET)
     @ResponseBody
+    @Operation(
+        tags = {"Observation"},
+        description = "Returns all observations"
+    )
     public List<ObservationData> findAll() {
         List<Observation> observationList = observationDAO.findAll();
 
@@ -80,8 +90,12 @@ public class ObservationController {
 
     }
 
-    @RequestMapping("/observation/{id}/upload")
+    @RequestMapping(value = "/observation/{id}/upload", method = RequestMethod.PUT)
     @ResponseBody
+    @Operation(
+        tags = {"Observation"},
+        description = "Upload an image for the observation {id}"
+    )
     public void uploadImage(@PathVariable long id, @RequestParam("image") MultipartFile image){
         try {
             File path = new File(observationsImageFolder + id + "/");
@@ -92,8 +106,12 @@ public class ObservationController {
         }
     }
 
-    @RequestMapping("/observation/create")
+    @RequestMapping(value = "/observation/create", method = RequestMethod.POST)
     @ResponseBody
+    @Operation(
+        tags = {"Observation"},
+        description = "Create an observation"
+    )
     public ObservationData create(@RequestPart("observationDTO") ObservationDTO observationDTO, @RequestPart("image") MultipartFile image){
 
         User author = userDAO.findByPseudo(observationDTO.getAuthor_pseudo());
