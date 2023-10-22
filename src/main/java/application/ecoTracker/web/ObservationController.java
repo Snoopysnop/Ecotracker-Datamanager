@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,6 +47,7 @@ public class ObservationController {
     private CampaignDAO campaignDAO;
 
     @RequestMapping(value = "/observation/{id}", method = RequestMethod.GET)
+    @CrossOrigin(origins = "http://localhost:3000")
     @ResponseBody
     @Operation(
         tags = {"Observation"},
@@ -67,6 +69,7 @@ public class ObservationController {
     }
 
     @RequestMapping(value = "/observations", method = RequestMethod.GET)
+    @CrossOrigin(origins = "http://localhost:3000")
     @ResponseBody
     @Operation(
         tags = {"Observation"},
@@ -91,6 +94,7 @@ public class ObservationController {
     }
 
     @RequestMapping(value = "/observation/{id}/upload", method = RequestMethod.PUT)
+    @CrossOrigin(origins = "http://localhost:3000")
     @ResponseBody
     @Operation(
         tags = {"Observation"},
@@ -107,6 +111,7 @@ public class ObservationController {
     }
 
     @RequestMapping(value = "/observation/create", method = RequestMethod.POST)
+    @CrossOrigin(origins = "http://localhost:3000")
     @ResponseBody
     @Operation(
         tags = {"Observation"},
