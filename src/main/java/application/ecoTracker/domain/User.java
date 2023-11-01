@@ -18,6 +18,7 @@ public class User implements Serializable {
 
     private List<Observation> observationList;
     private List<Campaign> campaignList = new ArrayList<>();
+    private List<ObservationVote> observationVoteList;
 
     protected User() {
         
@@ -63,4 +64,15 @@ public class User implements Serializable {
     public void setCampaignList(List<Campaign> campaignList) {
         this.campaignList = campaignList;
     }
+
+    @OneToMany(mappedBy  = "user")
+    public List<ObservationVote> getObservationVoteList() {
+        return observationVoteList;
+    }
+
+
+    public void setObservationVoteList(List<ObservationVote> observationVoteList) {
+        this.observationVoteList = observationVoteList;
+    }
+
 }

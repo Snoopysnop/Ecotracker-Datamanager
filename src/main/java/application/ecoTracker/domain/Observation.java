@@ -2,6 +2,7 @@ package application.ecoTracker.domain;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import application.ecoTracker.domain.utils.GPSCoordinates;
 import application.ecoTracker.domain.utils.TaxonomyGroup;
@@ -9,6 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Observation implements Serializable {
@@ -24,6 +26,7 @@ public class Observation implements Serializable {
     private String description;
     private LocalDateTime creationDate;
 
+    private List<ObservationVote> votes;
     private int upVoteCount = 0;
     private int downVoteCount = 0;
 
@@ -124,6 +127,15 @@ public class Observation implements Serializable {
 
     public void setDownVoteCount(int downVoteCount) {
         this.downVoteCount = downVoteCount;
+    }
+
+    @OneToMany(mappedBy = "observation")
+    public List<ObservationVote> getVotes() {
+        return votes;
+    }
+
+    public void setVotes(List<ObservationVote> votes) {
+        this.votes = votes;
     }
 
     @Override
