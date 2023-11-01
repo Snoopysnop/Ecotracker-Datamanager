@@ -15,7 +15,6 @@ public class ObservationVote implements Serializable {
 
     private User user;
     private Observation observation;
-    private int value;
     private Vote vote;
 
     protected ObservationVote() {
@@ -47,14 +46,6 @@ public class ObservationVote implements Serializable {
 
     public void setObservation(Observation observation) {
         this.observation = observation;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
     }
 
     public Vote getVote() {
