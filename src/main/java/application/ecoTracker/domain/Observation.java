@@ -27,8 +27,6 @@ public class Observation implements Serializable {
     private LocalDateTime creationDate;
 
     private List<ObservationVote> votes;
-    private int upVoteCount = 0;
-    private int downVoteCount = 0;
 
     protected Observation() {
 
@@ -113,22 +111,6 @@ public class Observation implements Serializable {
         this.creationDate = creationDate;
     }
 
-    public int getUpVoteCount() {
-        return upVoteCount;
-    }
-
-    public void setUpVoteCount(int upVoteCount) {
-        this.upVoteCount = upVoteCount;
-    }
-
-    public int getDownVoteCount() {
-        return downVoteCount;
-    }
-
-    public void setDownVoteCount(int downVoteCount) {
-        this.downVoteCount = downVoteCount;
-    }
-
     @OneToMany(mappedBy = "observation")
     public List<ObservationVote> getVotes() {
         return votes;
@@ -142,8 +124,7 @@ public class Observation implements Serializable {
     public String toString() {
         return "Observation [id=" + id + ", author=" + author + ", taxonomyGroup=" + taxonomyGroup + ", title=" + title
                 + ", location=" + location + ", description=" + description
-                + ", creationDate=" + creationDate + ", upVoteCount=" + upVoteCount + ", downVoteCount=" + downVoteCount
-                + "]";
+                + ", creationDate=" + creationDate + "]";
     }
 
 

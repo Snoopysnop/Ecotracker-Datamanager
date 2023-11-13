@@ -24,6 +24,7 @@ import application.ecoTracker.DAO.ObservationDAO;
 import application.ecoTracker.domain.Campaign;
 import application.ecoTracker.domain.Observation;
 import application.ecoTracker.domain.User;
+import application.ecoTracker.domain.utils.Vote;
 import application.ecoTracker.service.DTO.ObservationDTO;
 import application.ecoTracker.service.data.ObservationData;
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,7 +50,7 @@ public class ObservationController {
     @ResponseBody
     @Operation(
         tags = {"Observation"},
-        description = "Returns the campaign {id}"
+        description = "Returns the observation {id}"
     )
     public ObservationData findById(@PathVariable long id){
 
@@ -156,6 +157,25 @@ public class ObservationController {
         return new ObservationData(observation, observationsImageFolder);
     }
 
+    @RequestMapping(value = "/observation/{id}/upVotesCount", method = RequestMethod.GET)
+    @ResponseBody
+    @Operation(
+        tags = {"Observation"},
+        description = "Returns the up votes count for the observation {id}"
+    )
+    public int findUpVotesCountById(@PathVariable long id){
+        return observationDAO.findVotesCountById(Vote.UpVote, id);
+    }
+
+    @RequestMapping(value = "/observation/{id}/downVotesCount", method = RequestMethod.GET)
+    @ResponseBody
+    @Operation(
+        tags = {"Observation"},
+        description = "Returns the down votes count for the observation {id}"
+    )
+    public int findDownVotesCountById(@PathVariable long id){
+        return observationDAO.findVotesCountById(Vote.DownVote, id);
+    }
     
     
 }
