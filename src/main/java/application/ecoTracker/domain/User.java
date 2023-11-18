@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
@@ -55,7 +56,7 @@ public class User implements Serializable {
         this.observationList = observationList;
     }
 
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.EAGER)
     public List<Campaign> getCampaignList() {
         return campaignList;
     }

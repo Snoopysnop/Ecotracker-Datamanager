@@ -8,6 +8,7 @@ import java.util.List;
 import application.ecoTracker.domain.utils.Area;
 import application.ecoTracker.domain.utils.TaxonomyGroup;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
@@ -117,7 +118,7 @@ public class Campaign implements Serializable {
         this.observationList = observationList;
     }
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     public List<User> getUserList() {
         return userList;
     }

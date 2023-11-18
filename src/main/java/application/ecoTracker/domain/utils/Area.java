@@ -11,6 +11,11 @@ public class Area implements Serializable {
 
     }
 
+    public Area(GPSCoordinates coordinates, double radius) {
+        this.coordinates = coordinates;
+        this.radius = radius;
+    }
+
     public GPSCoordinates getCoordinates() {
         return coordinates;
     }

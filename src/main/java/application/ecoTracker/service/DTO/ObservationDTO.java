@@ -19,6 +19,16 @@ public class ObservationDTO implements Serializable {
 
     }
 
+    public ObservationDTO(String author_pseudo, long campaign_id, TaxonomyGroup taxonomyGroup, String title,
+            GPSCoordinates location, String description) {
+        this.author_pseudo = author_pseudo;
+        this.campaign_id = campaign_id;
+        this.taxonomyGroup = taxonomyGroup;
+        this.title = title;
+        this.location = location;
+        this.description = description;
+    }
+
     public String getAuthor_pseudo() {
         return author_pseudo;
     }

@@ -2,8 +2,9 @@
 ## Database
 Using mysql
 ```sql
+DROP DATABASE IF EXISTS ecotracker;
 CREATE database ecotracker;
-CREATE USER 'admin'@'localhost' IDENTIFIED BY 'admin';
+CREATE USER IF NOT EXISTS 'admin'@'localhost' IDENTIFIED BY 'admin';
 GRANT ALL PRIVILEGES ON ecotracker.* TO 'admin'@'localhost';
 FLUSH PRIVILEGES;
 ```
