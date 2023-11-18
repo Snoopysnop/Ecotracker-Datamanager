@@ -20,6 +20,12 @@ public class ObservationVote implements Serializable {
     protected ObservationVote() {
     }
 
+    public ObservationVote(User user, Observation observation, Vote vote) {
+        this.user = user;
+        this.observation = observation;
+        this.vote = vote;
+    }
+
     @Id
     @GeneratedValue
     public long getId() {

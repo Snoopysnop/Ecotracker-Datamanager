@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,11 +22,14 @@ import org.springframework.web.server.ResponseStatusException;
 import application.ecoTracker.DAO.UserDAO;
 import application.ecoTracker.DAO.CampaignDAO;
 import application.ecoTracker.DAO.ObservationDAO;
+import application.ecoTracker.DAO.ObservationVoteDAO;
 import application.ecoTracker.domain.Campaign;
 import application.ecoTracker.domain.Observation;
+import application.ecoTracker.domain.ObservationVote;
 import application.ecoTracker.domain.User;
 import application.ecoTracker.domain.utils.Vote;
 import application.ecoTracker.service.DTO.ObservationDTO;
+import application.ecoTracker.service.DTO.ObservationVoteDTO;
 import application.ecoTracker.service.data.ObservationData;
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -45,6 +49,9 @@ public class ObservationController {
 
     @Autowired
     private CampaignDAO campaignDAO;
+
+    @Autowired
+    private ObservationVoteDAO observationVoteDAO;
 
     @RequestMapping(value = "/observation/{id}", method = RequestMethod.GET)
     @ResponseBody
@@ -175,6 +182,42 @@ public class ObservationController {
     )
     public int findDownVotesCountById(@PathVariable long id){
         return observationDAO.findVotesCountById(Vote.DownVote, id);
+    }
+
+    @RequestMapping(value = "/observation/vote", method = RequestMethod.POST)
+    @ResponseBody
+    @Operation(
+        tags = {"Observation"},
+        description = "Vote to an observation"
+    )
+    public void voteToObservation(@RequestBody ObservationVoteDTO observationVoteDTO){
+
+        Observation observation;
+
+        try{
+            observation = observationDAO.findById(observationVoteDTO.getObservation_id()).get();
+        }
+
+        catch (Exception e) {
+            LOGGER.info("observation " + observationVoteDTO.getObservation_id() + " not found");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        User author;
+        try{
+            author = userDAO.findByPseudo(observationVoteDTO.getUser_pseudo());
+        }
+        catch (Exception e) {
+            LOGGER.info("user " + observationVoteDTO.getUser_pseudo() + " not found");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        observationVoteDAO.delete(observationVoteDAO.findByUserAndObservationId(author, observationVoteDTO.getObservation_id()));
+        ObservationVote observationVote = new ObservationVote(author, observation, observationVoteDTO.getVote());
+        observationVoteDAO.save(observationVote);
+
+
+
     }
     
     

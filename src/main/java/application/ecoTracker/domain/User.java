@@ -16,9 +16,9 @@ public class User implements Serializable {
     private String pseudo;
     private LocalDateTime creationDate;
 
-    private List<Observation> observationList;
+    private List<Observation> observationList = new ArrayList<>();;
     private List<Campaign> campaignList = new ArrayList<>();
-    private List<ObservationVote> observationVoteList;
+    private List<ObservationVote> observationVoteList = new ArrayList<>();;
 
     protected User() {
         
