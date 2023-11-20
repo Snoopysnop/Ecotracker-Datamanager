@@ -96,11 +96,11 @@ public class UserController {
 
     }
 
-    @RequestMapping(value = "/user/{pseudo}/register", method = RequestMethod.PUT)
+    @RequestMapping(value = "/user/{pseudo}/add", method = RequestMethod.PUT)
     @ResponseBody
     @Operation(
         tags = {"User"},
-        description = "Register user to campaign"
+        description = "Add campaign to user's favorite list"
     )
     public void registerToCampaign(@PathVariable String pseudo, @RequestBody String campaign_id){
 
