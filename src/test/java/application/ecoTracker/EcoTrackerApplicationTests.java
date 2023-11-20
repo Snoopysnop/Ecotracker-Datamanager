@@ -75,16 +75,12 @@ class EcoTrackerApplicationTests {
 		CampaignDTO campaignDTO = new CampaignDTO("Lady Bug", "Campaign to find Lady Bugs", "2023-10-04 12:00:00", "2023-10-11 12:00:00", groupsToIdentify, area, mairie_de_rennes.getId());
 
 		CampaignData campaign = campaignController.create(campaignDTO, image);
-
 		
-		userController.registerToCampaign(snoopy.getPseudo(), campaign.getId()+"");	
-
 		ObservationDTO observationDTO = new ObservationDTO(snoopy.getPseudo(), campaign.getId(), TaxonomyGroup.Insect, "Lady Bug Observation", new GPSCoordinates(0, 0), "Lady Bug Observation description");
 	    image = new MockMultipartFile("EyedLadyBug2.jpeg", new FileInputStream(new File("src/test/ressources/EyedLadyBug2.jpeg")));
 
 
 		observationController.create(observationDTO, image);
-
 	}
 
 }
