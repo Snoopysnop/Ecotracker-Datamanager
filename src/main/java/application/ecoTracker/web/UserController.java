@@ -102,7 +102,7 @@ public class UserController {
         tags = {"User"},
         description = "Add campaign to user's favorite list"
     )
-    public void registerToCampaign(@PathVariable String pseudo, @RequestBody String campaign_id){
+    public void addCampaignToFavorites(@PathVariable String pseudo, @RequestBody String campaign_id){
 
         User user = userDAO.findByPseudo(pseudo);
         if(user == null) {
