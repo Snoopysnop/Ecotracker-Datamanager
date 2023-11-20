@@ -1,4 +1,7 @@
 
+## Prerequistes
+The image folder defined in [application.properties](src/main/java/application/ecoTracker/ressources) must be an exisiting path.
+
 ## Database
 Using mysql
 ```sql
