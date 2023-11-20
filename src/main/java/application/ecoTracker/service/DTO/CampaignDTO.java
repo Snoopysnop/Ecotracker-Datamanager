@@ -21,6 +21,16 @@ public class CampaignDTO implements Serializable {
 
     }
 
+    public CampaignDTO(String name, String description, String startDate, String endDate,
+            List<TaxonomyGroup> groupsToIdentify, Area area, long organization_id) {
+        this.name = name;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.groupsToIdentify = groupsToIdentify;
+        this.area = area;
+        this.organization_id = organization_id;
+    }
 
     public String getName() {
         return name;
