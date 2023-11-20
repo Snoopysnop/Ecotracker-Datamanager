@@ -1,5 +1,5 @@
-## Prerequistes
-The image folder defined in [application.properties](src/main/resources/application.properties) must be an exisiting path.
+## Prerequisites
+The images folders defined in [application.properties](src/main/resources/application.properties) must be exisiting paths.
 
 ## Database
 Using mysql
