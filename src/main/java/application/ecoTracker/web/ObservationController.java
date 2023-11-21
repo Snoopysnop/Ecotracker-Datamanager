@@ -24,13 +24,18 @@ import application.ecoTracker.DAO.CampaignDAO;
 import application.ecoTracker.DAO.CommentDAO;
 import application.ecoTracker.DAO.ObservationDAO;
 import application.ecoTracker.domain.Campaign;
-import application.ecoTracker.domain.Comment;
 import application.ecoTracker.domain.Observation;
 import application.ecoTracker.domain.User;
-import application.ecoTracker.service.DTO.CommentDTO;
+import application.ecoTracker.domain.comment.Comment;
+import application.ecoTracker.domain.comment.MainComment;
+import application.ecoTracker.domain.comment.Reply;
 import application.ecoTracker.service.DTO.ObservationDTO;
-import application.ecoTracker.service.data.CommentData;
+import application.ecoTracker.service.DTO.comment.CommentDTO;
+import application.ecoTracker.service.DTO.comment.MainCommentDTO;
+import application.ecoTracker.service.DTO.comment.ReplyDTO;
 import application.ecoTracker.service.data.ObservationData;
+import application.ecoTracker.service.data.Comment.CommentData;
+import application.ecoTracker.service.data.Comment.MainCommentData;
 import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
@@ -164,37 +169,48 @@ public class ObservationController {
         tags = {"Observation"},
         description = "Add comment to an observation"
     )
-    public void comment(@RequestBody CommentDTO commentDTO){
+    public void comment(@RequestBody MainCommentDTO mainCommentDTO){
         
         Observation observation;
         try {
-            observation = observationDAO.findById(commentDTO.getObservation_id()).get();
+            observation = observationDAO.findById(mainCommentDTO.getObservation_id()).get();
         } catch (Exception e) {
-            LOGGER.info("Observation " + commentDTO.getObservation_id() + " not found");
+            LOGGER.info("Observation " + mainCommentDTO.getObservation_id() + " not found");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        User author = userDAO.findByPseudo(commentDTO.getAuthor());
+        User author = userDAO.findByPseudo(mainCommentDTO.getAuthor());
         if(author == null){
-            LOGGER.info("User " + commentDTO.getAuthor() + " not found");
+            LOGGER.info("User " + mainCommentDTO.getAuthor() + " not found");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        Comment reference = null;
-        if(commentDTO.getReference_id() != 0){
-            try {
-                reference = commentDAO.findById(commentDTO.getReference_id()).get();
-            }
-            catch (Exception e) {
-                LOGGER.info("Comment " + commentDTO.getReference_id() + " not found");
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-            }
+        MainComment comment = new MainComment(mainCommentDTO.getContent(), author, observation);
+        commentDAO.save(comment);
+    }
+
+    @RequestMapping(value = "/observation/reply", method = RequestMethod.POST)
+    @ResponseBody
+    @Operation(
+        tags = {"Observation"},
+        description = "Reply to the comment"
+    )
+    public void reply(@RequestBody ReplyDTO replyDTO){
+
+        User author = userDAO.findByPseudo(replyDTO.getAuthor());
+        if(author == null){
+            LOGGER.info("User " + replyDTO.getAuthor() + " not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        Comment comment = new Comment(commentDTO.getContent(), author, observation, reference);
+        Comment reference  = commentDAO.findMainCommentById(replyDTO.getReference_id());
+        if(reference == null) {
+            LOGGER.info("Comment " + replyDTO.getReference_id() + " not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        Reply comment = new Reply(replyDTO.getContent(), author, reference);
         commentDAO.save(comment);
-
-
     }
 
     @RequestMapping(value = "/observation/{id}/comments", method = RequestMethod.GET)
@@ -203,12 +219,17 @@ public class ObservationController {
         tags = {"Observation"},
         description = "Returns all comments for the observation {id}"
     )
-    public List<CommentData> getComments(@PathVariable long id){
-        List<Comment> commentList = commentDAO.findByObservationId(id);
+    public List<MainCommentData> getComments(@PathVariable long id){
+        List<MainComment> commentList = commentDAO.findMainCommentByObservationId(id);
 
-        List<CommentData> commentDataList = new ArrayList<>();
-        for(Comment comment : commentList){
-            commentDataList.add(new CommentData(comment));
+        List<MainCommentData> commentDataList = new ArrayList<>();
+        for(MainComment comment : commentList){
+            List<CommentData> replies = new ArrayList<>();
+            for(Reply reply : comment.getReplyList()) {
+                replies.add(new CommentData(reply));
+            }
+
+            commentDataList.add(new MainCommentData(comment, comment.getId(), replies));
         }
 
         return commentDataList;
