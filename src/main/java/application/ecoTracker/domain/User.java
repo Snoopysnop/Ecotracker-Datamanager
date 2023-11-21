@@ -19,6 +19,7 @@ public class User implements Serializable {
 
     private List<Observation> observationList;
     private List<Campaign> campaignList = new ArrayList<>();
+    private List<Comment> commentList;
 
     protected User() {
         
@@ -63,5 +64,15 @@ public class User implements Serializable {
 
     public void setCampaignList(List<Campaign> campaignList) {
         this.campaignList = campaignList;
+    }
+
+    @OneToMany(mappedBy = "author")
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
     }
 }

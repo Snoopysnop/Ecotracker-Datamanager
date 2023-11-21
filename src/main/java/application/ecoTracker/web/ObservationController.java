@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,11 +21,15 @@ import org.springframework.web.server.ResponseStatusException;
 
 import application.ecoTracker.DAO.UserDAO;
 import application.ecoTracker.DAO.CampaignDAO;
+import application.ecoTracker.DAO.CommentDAO;
 import application.ecoTracker.DAO.ObservationDAO;
 import application.ecoTracker.domain.Campaign;
+import application.ecoTracker.domain.Comment;
 import application.ecoTracker.domain.Observation;
 import application.ecoTracker.domain.User;
+import application.ecoTracker.service.DTO.CommentDTO;
 import application.ecoTracker.service.DTO.ObservationDTO;
+import application.ecoTracker.service.data.CommentData;
 import application.ecoTracker.service.data.ObservationData;
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -44,6 +49,9 @@ public class ObservationController {
 
     @Autowired
     private CampaignDAO campaignDAO;
+
+    @Autowired
+    private CommentDAO commentDAO;
 
     @RequestMapping(value = "/observation/{id}", method = RequestMethod.GET)
     @ResponseBody
@@ -124,7 +132,6 @@ public class ObservationController {
 
         try{
             campaign = campaignDAO.findById(observationDTO.getCampaign_id()).get();
-            LOGGER.info(campaign.toString());
         }
         catch (Exception e) {
             LOGGER.info("Campaign " + observationDTO.getCampaign_id() + " not found");
@@ -151,6 +158,61 @@ public class ObservationController {
         return new ObservationData(observation, observationsImageFolder);
     }
 
-    
-    
+    @RequestMapping(value = "/observation/comment", method = RequestMethod.POST)
+    @ResponseBody
+    @Operation(
+        tags = {"Observation"},
+        description = "Add comment to an observation"
+    )
+    public void comment(@RequestBody CommentDTO commentDTO){
+        
+        Observation observation;
+        try {
+            observation = observationDAO.findById(commentDTO.getObservation_id()).get();
+        } catch (Exception e) {
+            LOGGER.info("Observation " + commentDTO.getObservation_id() + " not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        User author = userDAO.findByPseudo(commentDTO.getAuthor());
+        if(author == null){
+            LOGGER.info("User " + commentDTO.getAuthor() + " not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        Comment reference = null;
+        if(commentDTO.getReference_id() != 0){
+            try {
+                reference = commentDAO.findById(commentDTO.getReference_id()).get();
+            }
+            catch (Exception e) {
+                LOGGER.info("Comment " + commentDTO.getReference_id() + " not found");
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            }
+        }
+
+        Comment comment = new Comment(commentDTO.getContent(), author, observation, reference);
+        commentDAO.save(comment);
+
+
+    }
+
+    @RequestMapping(value = "/observation/{id}/comments", method = RequestMethod.GET)
+    @ResponseBody
+    @Operation(
+        tags = {"Observation"},
+        description = "Returns all comments for the observation {id}"
+    )
+    public List<CommentData> getComments(@PathVariable long id){
+        List<Comment> commentList = commentDAO.findByObservationId(id);
+
+        List<CommentData> commentDataList = new ArrayList<>();
+        for(Comment comment : commentList){
+            commentDataList.add(new CommentData(comment));
+        }
+
+        return commentDataList;
+
+    }
+
 }

@@ -14,15 +14,19 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import application.ecoTracker.DAO.CampaignDAO;
+import application.ecoTracker.DAO.CommentDAO;
 import application.ecoTracker.DAO.UserDAO;
+import application.ecoTracker.domain.Comment;
 import application.ecoTracker.domain.Organization;
 import application.ecoTracker.domain.User;
 import application.ecoTracker.domain.utils.Area;
 import application.ecoTracker.domain.utils.GPSCoordinates;
 import application.ecoTracker.domain.utils.TaxonomyGroup;
 import application.ecoTracker.service.DTO.CampaignDTO;
+import application.ecoTracker.service.DTO.CommentDTO;
 import application.ecoTracker.service.DTO.ObservationDTO;
 import application.ecoTracker.service.data.CampaignData;
+import application.ecoTracker.service.data.ObservationData;
 import application.ecoTracker.web.CampaignController;
 import application.ecoTracker.web.ObservationController;
 import application.ecoTracker.web.OrganizationController;
@@ -49,6 +53,9 @@ class EcoTrackerApplicationTests {
 
 	@Autowired
 	private UserDAO userDAO;
+
+	@Autowired
+	private CommentDAO commentDAO;
 
 
 	@Test
@@ -80,7 +87,14 @@ class EcoTrackerApplicationTests {
 	    image = new MockMultipartFile("EyedLadyBug2.jpeg", new FileInputStream(new File("src/test/ressources/EyedLadyBug2.jpeg")));
 
 
-		observationController.create(observationDTO, image);
+		ObservationData observationData = observationController.create(observationDTO, image);
+
+		CommentDTO commentDTO = new CommentDTO("comment", frageli.getPseudo(), observationData.getId(), 0);
+		observationController.comment(commentDTO);
+		Comment reference = commentDAO.findAll().get(0);
+
+		commentDTO = new CommentDTO("response", snoopy.getPseudo(), observationData.getId(), reference.getId());
+		observationController.comment(commentDTO);
 	}
 
 }
