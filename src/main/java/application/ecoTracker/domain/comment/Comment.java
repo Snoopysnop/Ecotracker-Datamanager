@@ -1,37 +1,34 @@
-package application.ecoTracker.domain;
+package application.ecoTracker.domain.comment;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import application.ecoTracker.domain.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 
 @Entity
-public class Comment implements Serializable {
+public abstract class Comment implements Serializable {
 
     private long id;
     private LocalDateTime creationDate;
     private String content;
 
     private User author;
-    private Observation observation;
-    private Comment reference;
-
-    protected Comment(){
+    
+    protected Comment() {
 
     }
 
-    public Comment(String content, User author, Observation observation, Comment reference) {
+    public Comment(String content, User author) {
         this.creationDate = LocalDateTime.now();
         this.content = content;
         this.author = author;
-        this.observation = observation;
-        this.reference = reference;
     }
 
+    
     @Id
     @GeneratedValue
     public long getId() {
@@ -67,22 +64,4 @@ public class Comment implements Serializable {
         this.author = author;
     }
 
-    @ManyToOne
-    public Observation getObservation() {
-        return observation;
-    }
-
-    public void setObservation(Observation observation) {
-        this.observation = observation;
-    }
-
-    @OneToOne
-    public Comment getReference() {
-        return reference;
-    }
-
-    public void setReference(Comment reference) {
-        this.reference = reference;
-    }
-     
 }

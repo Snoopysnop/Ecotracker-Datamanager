@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import application.ecoTracker.domain.comment.MainComment;
 import application.ecoTracker.domain.utils.GPSCoordinates;
 import application.ecoTracker.domain.utils.TaxonomyGroup;
 import jakarta.persistence.Entity;
@@ -26,7 +27,7 @@ public class Observation implements Serializable {
     private String description;
     private LocalDateTime creationDate;
 
-    private List<Comment> commentList;
+    private List<MainComment> commentList;
 
     private int upVoteCount = 0;
     private int downVoteCount = 0;
@@ -131,11 +132,11 @@ public class Observation implements Serializable {
     }
 
     @OneToMany(mappedBy = "observation")
-    public List<Comment> getCommentList() {
+    public List<MainComment> getCommentList() {
         return commentList;
     }
 
-    public void setCommentList(List<Comment> commentList) {
+    public void setCommentList(List<MainComment> commentList) {
         this.commentList = commentList;
     }
 
