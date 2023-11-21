@@ -2,7 +2,7 @@ package application.ecoTracker.service.DTO.comment;
 
 import java.io.Serializable;
 
-public abstract class CommentDTO implements Serializable {
+public class CommentDTO implements Serializable {
 
     private String content;
     private String author;

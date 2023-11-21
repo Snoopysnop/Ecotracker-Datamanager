@@ -24,8 +24,7 @@ import application.ecoTracker.domain.utils.GPSCoordinates;
 import application.ecoTracker.domain.utils.TaxonomyGroup;
 import application.ecoTracker.service.DTO.CampaignDTO;
 import application.ecoTracker.service.DTO.ObservationDTO;
-import application.ecoTracker.service.DTO.comment.MainCommentDTO;
-import application.ecoTracker.service.DTO.comment.ReplyDTO;
+import application.ecoTracker.service.DTO.comment.CommentDTO;
 import application.ecoTracker.service.data.CampaignData;
 import application.ecoTracker.service.data.ObservationData;
 import application.ecoTracker.web.CampaignController;
@@ -91,13 +90,13 @@ class EcoTrackerApplicationTests {
 		ObservationData observationData = observationController.create(observationDTO, image);
 
 
-		MainCommentDTO mainCommentDTO = new MainCommentDTO("comment", frageli.getPseudo(), observationData.getId());
-		observationController.comment(mainCommentDTO);
+		CommentDTO commentDTO = new CommentDTO("comment", frageli.getPseudo());
+		observationController.comment(observationData.getId(), commentDTO);
 
 		Comment reference = commentDAO.findAll().get(0);
 
-		ReplyDTO replyDTO = new ReplyDTO("reply", snoopy.getPseudo(), reference.getId());
-		observationController.reply(replyDTO);
+		commentDTO = new CommentDTO("reply", snoopy.getPseudo());
+		observationController.reply(reference.getId(), commentDTO);
 	}
 
 }

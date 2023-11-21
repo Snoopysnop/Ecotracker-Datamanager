@@ -31,8 +31,6 @@ import application.ecoTracker.domain.comment.MainComment;
 import application.ecoTracker.domain.comment.Reply;
 import application.ecoTracker.service.DTO.ObservationDTO;
 import application.ecoTracker.service.DTO.comment.CommentDTO;
-import application.ecoTracker.service.DTO.comment.MainCommentDTO;
-import application.ecoTracker.service.DTO.comment.ReplyDTO;
 import application.ecoTracker.service.data.ObservationData;
 import application.ecoTracker.service.data.Comment.CommentData;
 import application.ecoTracker.service.data.Comment.MainCommentData;
@@ -163,53 +161,53 @@ public class ObservationController {
         return new ObservationData(observation, observationsImageFolder);
     }
 
-    @RequestMapping(value = "/observation/comment", method = RequestMethod.POST)
+    @RequestMapping(value = "/observation/{id}/comment", method = RequestMethod.POST)
     @ResponseBody
     @Operation(
         tags = {"Observation"},
-        description = "Add comment to an observation"
+        description = "Add comment to the observation {id}"
     )
-    public void comment(@RequestBody MainCommentDTO mainCommentDTO){
+    public void comment(@PathVariable long id, @RequestBody CommentDTO commentDTO){
         
         Observation observation;
         try {
-            observation = observationDAO.findById(mainCommentDTO.getObservation_id()).get();
+            observation = observationDAO.findById(id).get();
         } catch (Exception e) {
-            LOGGER.info("Observation " + mainCommentDTO.getObservation_id() + " not found");
+            LOGGER.info("Observation " + id + " not found");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        User author = userDAO.findByPseudo(mainCommentDTO.getAuthor());
+        User author = userDAO.findByPseudo(commentDTO.getAuthor());
         if(author == null){
-            LOGGER.info("User " + mainCommentDTO.getAuthor() + " not found");
+            LOGGER.info("User " + commentDTO.getAuthor() + " not found");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        MainComment comment = new MainComment(mainCommentDTO.getContent(), author, observation);
+        MainComment comment = new MainComment(commentDTO.getContent(), author, observation);
         commentDAO.save(comment);
     }
 
-    @RequestMapping(value = "/observation/reply", method = RequestMethod.POST)
+    @RequestMapping(value = "/observation/comment/{id}/reply", method = RequestMethod.POST)
     @ResponseBody
     @Operation(
         tags = {"Observation"},
-        description = "Reply to the comment"
+        description = "Reply to the comment {id}"
     )
-    public void reply(@RequestBody ReplyDTO replyDTO){
+    public void reply(@PathVariable long id, @RequestBody CommentDTO commentDTO){
 
-        User author = userDAO.findByPseudo(replyDTO.getAuthor());
+        User author = userDAO.findByPseudo(commentDTO.getAuthor());
         if(author == null){
-            LOGGER.info("User " + replyDTO.getAuthor() + " not found");
+            LOGGER.info("User " + commentDTO.getAuthor() + " not found");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        Comment reference  = commentDAO.findMainCommentById(replyDTO.getReference_id());
+        Comment reference  = commentDAO.findMainCommentById(id);
         if(reference == null) {
-            LOGGER.info("Comment " + replyDTO.getReference_id() + " not found");
+            LOGGER.info("Comment " + id + " not found");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        Reply comment = new Reply(replyDTO.getContent(), author, reference);
+        Reply comment = new Reply(commentDTO.getContent(), author, reference);
         commentDAO.save(comment);
     }
 
