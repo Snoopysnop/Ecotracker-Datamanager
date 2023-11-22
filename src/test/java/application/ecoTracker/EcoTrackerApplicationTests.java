@@ -15,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import application.ecoTracker.DAO.CampaignDAO;
 import application.ecoTracker.DAO.CommentDAO;
+import application.ecoTracker.DAO.ObservationDAO;
+import application.ecoTracker.DAO.OrganizationDAO;
 import application.ecoTracker.DAO.UserDAO;
 import application.ecoTracker.domain.Organization;
 import application.ecoTracker.domain.User;
@@ -57,18 +59,31 @@ class EcoTrackerApplicationTests {
 	@Autowired
 	private CommentDAO commentDAO;
 
+	@Autowired
+	private ObservationDAO observationDAO;
+
+	@Autowired
+	private OrganizationDAO organizationDAO;
+
 
 	@Test
 	void contextLoads() {
 	}
 
 	/**
-	 * @require Empty database
+	 * Clear database and create test data
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
 	@Test
-	void fillDatabase() throws FileNotFoundException, IOException {
+	void initDatabaseWithTestData() throws FileNotFoundException, IOException {
+
+		// clear database
+		commentDAO.deleteAll();
+		observationDAO.deleteAll();
+		userDAO.deleteAll();
+		campaignDAO.deleteAll();
+		organizationDAO.deleteAll();
 
 		User snoopy = userController.create("Snoopy");
 		User frageli = userController.create("Frageli");
@@ -88,7 +103,6 @@ class EcoTrackerApplicationTests {
 
 
 		ObservationData observationData = observationController.create(observationDTO, image);
-
 
 		CommentDTO commentDTO = new CommentDTO("comment", frageli.getPseudo());
 		observationController.comment(observationData.getId(), commentDTO);
