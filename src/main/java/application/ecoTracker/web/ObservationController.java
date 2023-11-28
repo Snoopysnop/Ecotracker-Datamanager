@@ -171,6 +171,7 @@ public class ObservationController {
     }
 
     @RequestMapping(value = "/observation/{id}/comment", method = RequestMethod.POST)
+    @CrossOrigin(origins = "http://localhost:3000")
     @ResponseBody
     @Operation(
         tags = {"Observation"},
@@ -199,6 +200,7 @@ public class ObservationController {
     }
 
     @RequestMapping(value = "/observation/comment/{id}/reply", method = RequestMethod.POST)
+    @CrossOrigin(origins = "http://localhost:3000")
     @ResponseBody
     @Operation(
         tags = {"Observation"},
@@ -226,6 +228,7 @@ public class ObservationController {
     }
 
     @RequestMapping(value = "/observation/{id}/comments", method = RequestMethod.GET)
+    @CrossOrigin(origins = "http://localhost:3000")
     @ResponseBody
     @Operation(
         tags = {"Observation"},
