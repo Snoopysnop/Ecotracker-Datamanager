@@ -91,7 +91,7 @@ class EcoTrackerApplicationTests {
 		Organization mairie_de_rennes = organizationController.create("Mairie de Rennes");
 
 		List<TaxonomyGroup> groupsToIdentify = Arrays.asList(TaxonomyGroup.Insect);
-		Area area = new Area(new GPSCoordinates(0, 0), 0);
+		Area area = new Area(new GPSCoordinates(48.130195, -1.650862), 2000);
 
 		MultipartFile image = new MockMultipartFile("EyedLadyBug1.jpeg", new FileInputStream(new File("src/test/ressources/EyedLadyBug1.jpeg")));
 		CampaignDTO campaignDTO = new CampaignDTO("Lady Bug", "Campaign to find Lady Bugs", "2023-10-04 12:00:00", "2023-10-11 12:00:00", groupsToIdentify, area, mairie_de_rennes.getId());
