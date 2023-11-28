@@ -4,9 +4,9 @@ The images folders defined in [application.properties](src/main/resources/applic
 ## Database
 Using mysql
 ```sql
-CREATE database ecotracker;
+CREATE database ecoTracker;
 CREATE USER 'admin'@'localhost' IDENTIFIED BY 'admin';
-GRANT ALL PRIVILEGES ON ecotracker.* TO 'admin'@'localhost';
+GRANT ALL PRIVILEGES ON ecoTracker.* TO 'admin'@'localhost';
 FLUSH PRIVILEGES;
 ```
 
