@@ -102,7 +102,7 @@ public class UserController {
 
     }
 
-    @RequestMapping(value = "/user/{pseudo}/register", method = RequestMethod.PUT)
+    @RequestMapping(value = "/user/{pseudo}/add", method = RequestMethod.PUT)
     @CrossOrigin(origins = "http://localhost:3000")
     @ResponseBody
     @Operation(
