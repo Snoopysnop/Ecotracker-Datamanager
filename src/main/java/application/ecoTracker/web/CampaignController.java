@@ -106,6 +106,9 @@ public class CampaignController {
     )
     public CampaignData create(@RequestPart("campaign") CampaignDTO campaignDTO, @RequestPart("image") MultipartFile image) {
 
+        // TODO : is user admin
+        // TODO : handle who can create with wich organizations ?
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         
         Organization organization;

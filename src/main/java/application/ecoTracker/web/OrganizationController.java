@@ -24,6 +24,8 @@ public class OrganizationController {
         description = "Create an organization"
     )
     public Organization create(@RequestBody String name){
+        // TODO : check if user is admin
+
         return organizationDAO.save(new Organization(name));
 
     }

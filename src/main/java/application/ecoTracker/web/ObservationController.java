@@ -108,6 +108,9 @@ public class ObservationController {
         description = "Upload an image for the observation {id}"
     )
     public void uploadImage(@PathVariable long id, @RequestParam("image") MultipartFile image){
+
+        // TODO : is user owner of the observation
+
         try {
             File path = new File(observationsImageFolder + id + "/");
             image.transferTo(new File(observationsImageFolder + id + "/" + path.list().length + ".png")); 
@@ -125,6 +128,7 @@ public class ObservationController {
     )
     public ObservationData create(@RequestPart("observationDTO") ObservationDTO observationDTO, @RequestPart("image") MultipartFile image){
 
+        // TODO : check if user logged in
         User author = userDAO.findByPseudo(observationDTO.getAuthor_pseudo());
         if(author == null) {
             LOGGER.info("User " + observationDTO.getAuthor_pseudo() + " not found");
@@ -168,18 +172,20 @@ public class ObservationController {
         description = "Add comment to the observation {id}"
     )
     public void comment(@PathVariable long id, @RequestBody CommentDTO commentDTO){
-        
+        // TODO : check if user logged in
+        // TODO : handle user in body / user logged in
+
+        User author = userDAO.findByPseudo(commentDTO.getAuthor());
+        if(author == null){
+            LOGGER.info("User " + commentDTO.getAuthor() + " not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
         Observation observation;
         try {
             observation = observationDAO.findById(id).get();
         } catch (Exception e) {
             LOGGER.info("Observation " + id + " not found");
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
-
-        User author = userDAO.findByPseudo(commentDTO.getAuthor());
-        if(author == null){
-            LOGGER.info("User " + commentDTO.getAuthor() + " not found");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
@@ -195,6 +201,9 @@ public class ObservationController {
     )
     public void reply(@PathVariable long id, @RequestBody CommentDTO commentDTO){
 
+        // TODO : check if user logged in
+        // TODO : handle user in body / user logged in
+        
         User author = userDAO.findByPseudo(commentDTO.getAuthor());
         if(author == null){
             LOGGER.info("User " + commentDTO.getAuthor() + " not found");

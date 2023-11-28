@@ -61,6 +61,8 @@ public class UserController {
     )
     public User create(@RequestBody String pseudo){
 
+        // TODO : handled by keycloack ?
+
         if(userDAO.findByPseudo(pseudo) == null){
             User user = new User(pseudo);
             userDAO.save(user);
@@ -103,6 +105,9 @@ public class UserController {
         description = "Add campaign to user's favorite list"
     )
     public void addCampaignToFavorites(@PathVariable String pseudo, @RequestBody String campaign_id){
+
+        // TODO : check if user logged in
+        // TODO : handle user in body / user logged in
 
         User user = userDAO.findByPseudo(pseudo);
         if(user == null) {
