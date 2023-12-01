@@ -8,7 +8,7 @@ import application.ecoTracker.domain.utils.TaxonomyGroup;
 
 public class CampaignDTO implements Serializable {
 
-    private String name;
+    private String title;
     private String description;
     private String startDate;
     private String endDate;
@@ -21,9 +21,9 @@ public class CampaignDTO implements Serializable {
 
     }
 
-    public CampaignDTO(String name, String description, String startDate, String endDate,
+    public CampaignDTO(String title, String description, String startDate, String endDate,
             List<TaxonomyGroup> groupsToIdentify, Area area, long organization_id) {
-        this.name = name;
+        this.title = title;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -32,12 +32,12 @@ public class CampaignDTO implements Serializable {
         this.organization_id = organization_id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {

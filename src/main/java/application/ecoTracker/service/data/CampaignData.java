@@ -11,7 +11,7 @@ import application.ecoTracker.domain.utils.TaxonomyGroup;
 public class CampaignData implements Serializable {
     
     private long id;
-    private String name;
+    private String title;
     private String description;
     private String startDate;
     private String endDate;
@@ -23,7 +23,7 @@ public class CampaignData implements Serializable {
 
     public CampaignData(Campaign campaign, String campaignsImageFolder) {
         this.id = campaign.getId();
-        this.name = campaign.getName();
+        this.title = campaign.getTitle();
         this.description = campaign.getDescription();
         this.startDate = campaign.getStartDate().toString();
         this.endDate = campaign.getEndDate().toString();
@@ -39,11 +39,11 @@ public class CampaignData implements Serializable {
     public void setId(long id) {
         this.id = id;
     }
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
     public String getDescription() {
         return description;

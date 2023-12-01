@@ -126,7 +126,7 @@ public class CampaignController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
 
-        Campaign campaign = new Campaign(campaignDTO.getName(), campaignDTO.getDescription(), LocalDateTime.parse(campaignDTO.getStartDate(), formatter), LocalDateTime.parse(campaignDTO.getEndDate(), formatter), campaignDTO.getGroupsToIdentify(), campaignDTO.getArea(), organization);
+        Campaign campaign = new Campaign(campaignDTO.getTitle(), campaignDTO.getDescription(), LocalDateTime.parse(campaignDTO.getStartDate(), formatter), LocalDateTime.parse(campaignDTO.getEndDate(), formatter), campaignDTO.getGroupsToIdentify(), campaignDTO.getArea(), organization);
         campaignDAO.save(campaign);
 
         // save image

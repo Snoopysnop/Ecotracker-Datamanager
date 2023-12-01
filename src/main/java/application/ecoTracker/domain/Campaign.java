@@ -20,7 +20,7 @@ public class Campaign implements Serializable {
 
     private Long id;
     
-    private String name;
+    private String title;
     private String description;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
@@ -36,9 +36,9 @@ public class Campaign implements Serializable {
 
     }
 
-    public Campaign(String name, String description, LocalDateTime startDate, LocalDateTime endDate,
+    public Campaign(String title, String description, LocalDateTime startDate, LocalDateTime endDate,
             List<TaxonomyGroup> groupsToIdentify, Area area, Organization organization) {
-        this.name = name;
+        this.title = title;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -60,12 +60,12 @@ public class Campaign implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {
