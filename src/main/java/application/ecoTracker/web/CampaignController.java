@@ -110,7 +110,7 @@ public class CampaignController {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-        Campaign campaign = new Campaign(campaignDTO.getTitle(), campaignDTO.getDescription(), LocalDateTime.parse(campaignDTO.getStartDate(), formatter), LocalDateTime.parse(campaignDTO.getEndDate(), formatter), campaignDTO.getGroupsToIdentify(), campaignDTO.getArea(), campaignDTO.getOrganization_name());
+        Campaign campaign = new Campaign(campaignDTO.getTitle(), campaignDTO.getDescription(), LocalDateTime.parse(campaignDTO.getStartDate(), formatter), LocalDateTime.parse(campaignDTO.getEndDate(), formatter), campaignDTO.getGroupsToIdentify(), campaignDTO.getArea(), campaignDTO.getAuthor());
         campaignDAO.save(campaign);
 
         // save image
