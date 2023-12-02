@@ -7,34 +7,36 @@ import application.ecoTracker.domain.utils.TaxonomyGroup;
 
 public class ObservationDTO implements Serializable {
 
-    private String author_pseudo;
+    private String author;
     private long campaign_id;
 
     private TaxonomyGroup taxonomyGroup;
     private String title;
-    private GPSCoordinates location;
+    private GPSCoordinates coordinates;
     private String description;
+    private String creationDate;
 
     protected ObservationDTO() {
 
     }
 
-    public ObservationDTO(String author_pseudo, long campaign_id, TaxonomyGroup taxonomyGroup, String title,
-            GPSCoordinates location, String description) {
-        this.author_pseudo = author_pseudo;
+    public ObservationDTO(String author, long campaign_id, TaxonomyGroup taxonomyGroup, String title,
+            GPSCoordinates coordinates, String description, String creationDate) {
+        this.author = author;
         this.campaign_id = campaign_id;
         this.taxonomyGroup = taxonomyGroup;
         this.title = title;
-        this.location = location;
+        this.coordinates = coordinates;
         this.description = description;
+        this.creationDate = creationDate;
     }
 
-    public String getAuthor_pseudo() {
-        return author_pseudo;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setAuthor_pseudo(String author_pseudo) {
-        this.author_pseudo = author_pseudo;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public TaxonomyGroup getTaxonomyGroup() {
@@ -53,12 +55,12 @@ public class ObservationDTO implements Serializable {
         this.title = title;
     }
 
-    public GPSCoordinates getLocation() {
-        return location;
+    public GPSCoordinates getCoordinates() {
+        return coordinates;
     }
 
-    public void setLocation(GPSCoordinates location) {
-        this.location = location;
+    public void setCoordinates(GPSCoordinates coordinates) {
+        this.coordinates = coordinates;
     }
 
     public String getDescription() {
@@ -77,4 +79,11 @@ public class ObservationDTO implements Serializable {
         this.campaign_id = campaign_id;
     }
 
+    public String getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(String creationDate) {
+        this.creationDate = creationDate;
+    }
 }

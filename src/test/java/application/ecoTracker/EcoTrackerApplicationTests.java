@@ -21,6 +21,7 @@ import application.ecoTracker.DAO.CommentDAO;
 import application.ecoTracker.DAO.ObservationDAO;
 import application.ecoTracker.DAO.OrganizationDAO;
 import application.ecoTracker.DAO.UserDAO;
+import application.ecoTracker.domain.Campaign;
 import application.ecoTracker.service.DTO.CampaignDTO;
 import application.ecoTracker.service.DTO.ObservationDTO;
 import application.ecoTracker.web.CampaignController;
@@ -78,8 +79,22 @@ class EcoTrackerApplicationTests {
 		List<ObservationDTO> observations = objectMapper.readValue(observations_string, new TypeReference<List<ObservationDTO>>(){});
 
 		for(ObservationDTO observation : observations){
-			userController.create(observation.getAuthor_pseudo());
-			MultipartFile image = new MockMultipartFile("EyedLadyBug2.jpeg", new FileInputStream(new File("src/test/ressources/EyedLadyBug1.jpeg")));
+
+			if(userDAO.findByPseudo(observation.getAuthor()) == null){
+				userController.create(observation.getAuthor());
+			}
+			
+
+			List<Campaign> campaigns = campaignDAO.findAll();
+			for(Campaign campaign : campaigns) {
+				if(campaign.getGroupsToIdentify().contains(observation.getTaxonomyGroup())){
+					observation.setCampaign_id(campaign.getId());
+					break;
+				}
+			}
+
+
+			MultipartFile image = new MockMultipartFile("EyedLadyBug2.jpeg", new FileInputStream(new File("src/test/resources/EyedLadyBug1.jpeg")));
 			observationController.create(observation, image);
 		}
 
@@ -99,8 +114,10 @@ class EcoTrackerApplicationTests {
 		List<CampaignDTO> campaigns = objectMapper.readValue(campaigns_string, new TypeReference<List<CampaignDTO>>(){});
 
 		for(CampaignDTO campaign : campaigns){
-			organizationController.create(campaign.getAuthor());
-			MultipartFile image = new MockMultipartFile("EyedLadyBug1.jpeg", new FileInputStream(new File("src/test/ressources/EyedLadyBug1.jpeg")));
+			if(organizationDAO.findByName(campaign.getAuthor()) == null){
+				organizationController.create(campaign.getAuthor());
+			}
+			MultipartFile image = new MockMultipartFile("EyedLadyBug1.jpeg", new FileInputStream(new File("src/test/resources/EyedLadyBug1.jpeg")));
 			campaignController.create(campaign, image);
 		}
 
@@ -122,8 +139,9 @@ class EcoTrackerApplicationTests {
 		campaignDAO.deleteAll();
 		organizationDAO.deleteAll();
 
-		createObservationsData();
 		createCampaignsData();
+		createObservationsData();
+		
 	}
 
 }
