@@ -19,7 +19,7 @@ public class CampaignData implements Serializable {
     private Area area;
     private String imageLocation;
 
-    private String author;
+    private String organization_name;
 
     public CampaignData(Campaign campaign, String campaignsImageFolder) {
         this.id = campaign.getId();
@@ -29,7 +29,7 @@ public class CampaignData implements Serializable {
         this.endDate = campaign.getEndDate().toString();
         this.groupsToIdentify = campaign.getGroupsToIdentify();
         this.area = campaign.getArea();
-        this.author = campaign.getOrganization();
+        this.organization_name = campaign.getOrganization();
         this.imageLocation = campaignsImageFolder + this.id + "/" + new File(campaignsImageFolder + this.id + "/").list()[0];
     }
 
@@ -75,11 +75,11 @@ public class CampaignData implements Serializable {
     public void setArea(Area area) {
         this.area = area;
     }
-    public String getAuthor() {
-        return author;
+    public String getOrganization_name() {
+        return organization_name;
     }
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setOrganization_name(String organization_name) {
+        this.organization_name = organization_name;
     }
     public String getImageLocation() {
         return imageLocation;
