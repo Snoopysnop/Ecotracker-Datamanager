@@ -4,16 +4,16 @@ public enum TaxonomyGroup {
     
     Animals,
     Fish,
-    Bird,
-    Reptile,
-    Amphibian,
-    Mammal,
-    Arachnid,
-    Insect,
-    Plant,
+    Birds,
+    Reptiles,
+    Amphibians,
+    Mammals,
+    Arachnids,
+    Insects,
+    Plants,
     Fungi,
-    Protozoan,
-    Mollusk,
+    Protozoans,
+    Mollusks,
     Kelp
     
 }
