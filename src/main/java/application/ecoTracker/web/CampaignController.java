@@ -22,10 +22,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import application.ecoTracker.DAO.CampaignDAO;
 import application.ecoTracker.DAO.ObservationDAO;
-import application.ecoTracker.DAO.OrganizationDAO;
 import application.ecoTracker.domain.Campaign;
 import application.ecoTracker.domain.Observation;
-import application.ecoTracker.domain.Organization;
 import application.ecoTracker.service.DTO.CampaignDTO;
 import application.ecoTracker.service.data.CampaignData;
 import application.ecoTracker.service.data.ObservationData;
@@ -49,9 +47,6 @@ public class CampaignController {
 
     @Autowired
     private ObservationDAO observationDAO;
-
-    @Autowired
-    private OrganizationDAO organizationDAO;
 
     @RequestMapping(value = "/campaign/{id}", method = RequestMethod.GET)
     @CrossOrigin(origins = "http://localhost:3000")
@@ -114,19 +109,8 @@ public class CampaignController {
         // TODO : handle who can create with wich organizations ?
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        
-        Organization organization;
 
-        try{
-            organization = organizationDAO.findById(campaignDTO.getOrganization_id()).get();
-        }
-
-        catch (Exception e) {
-            LOGGER.info("organization " + campaignDTO.getOrganization_id() + " not found");
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
-
-        Campaign campaign = new Campaign(campaignDTO.getTitle(), campaignDTO.getDescription(), LocalDateTime.parse(campaignDTO.getStartDate(), formatter), LocalDateTime.parse(campaignDTO.getEndDate(), formatter), campaignDTO.getGroupsToIdentify(), campaignDTO.getArea(), organization);
+        Campaign campaign = new Campaign(campaignDTO.getTitle(), campaignDTO.getDescription(), LocalDateTime.parse(campaignDTO.getStartDate(), formatter), LocalDateTime.parse(campaignDTO.getEndDate(), formatter), campaignDTO.getGroupsToIdentify(), campaignDTO.getArea(), campaignDTO.getOrganization_name());
         campaignDAO.save(campaign);
 
         // save image

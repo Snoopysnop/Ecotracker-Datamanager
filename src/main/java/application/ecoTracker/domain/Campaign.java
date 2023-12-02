@@ -30,14 +30,14 @@ public class Campaign implements Serializable {
 
     private List<Observation> observationList;
     private List<User> userList;
-    private Organization organization;
+    private String organization;
 
     protected Campaign() {
 
     }
 
     public Campaign(String title, String description, LocalDateTime startDate, LocalDateTime endDate,
-            List<TaxonomyGroup> groupsToIdentify, Area area, Organization organization) {
+            List<TaxonomyGroup> groupsToIdentify, Area area, String organization) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
@@ -128,11 +128,11 @@ public class Campaign implements Serializable {
     }
 
     @ManyToOne
-    public Organization getOrganization() {
+    public String getOrganization() {
         return organization;
     }
 
-    public void setOrganization(Organization organization) {
+    public void setOrganization(String organization) {
         this.organization = organization;
     }
 

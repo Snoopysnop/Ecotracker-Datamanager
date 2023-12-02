@@ -16,9 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import application.ecoTracker.DAO.CampaignDAO;
 import application.ecoTracker.DAO.CommentDAO;
 import application.ecoTracker.DAO.ObservationDAO;
-import application.ecoTracker.DAO.OrganizationDAO;
 import application.ecoTracker.DAO.UserDAO;
-import application.ecoTracker.domain.Organization;
 import application.ecoTracker.domain.User;
 import application.ecoTracker.domain.comment.Comment;
 import application.ecoTracker.domain.utils.Area;
@@ -31,7 +29,6 @@ import application.ecoTracker.service.data.CampaignData;
 import application.ecoTracker.service.data.ObservationData;
 import application.ecoTracker.web.CampaignController;
 import application.ecoTracker.web.ObservationController;
-import application.ecoTracker.web.OrganizationController;
 import application.ecoTracker.web.UserController;
 
 
@@ -40,9 +37,6 @@ class EcoTrackerApplicationTests {
 
 	@Autowired
     private UserController userController;
-
-	@Autowired
-    private OrganizationController organizationController;
 
 	@Autowired
     private CampaignController campaignController;
@@ -61,9 +55,7 @@ class EcoTrackerApplicationTests {
 
 	@Autowired
 	private ObservationDAO observationDAO;
-
-	@Autowired
-	private OrganizationDAO organizationDAO;
+	
 
 
 	@Test
@@ -83,18 +75,17 @@ class EcoTrackerApplicationTests {
 		observationDAO.deleteAll();
 		userDAO.deleteAll();
 		campaignDAO.deleteAll();
-		organizationDAO.deleteAll();
 
 		User snoopy = userController.create("Snoopy");
 		User frageli = userController.create("Frageli");
 
-		Organization mairie_de_rennes = organizationController.create("Mairie de Rennes");
+		String mairie_de_rennes = "Mairie de Rennes";
 
 		List<TaxonomyGroup> groupsToIdentify = Arrays.asList(TaxonomyGroup.Insects);
 		Area area = new Area(new GPSCoordinates(48.130195, -1.650862), 2000);
 
 		MultipartFile image = new MockMultipartFile("EyedLadyBug1.jpeg", new FileInputStream(new File("src/test/ressources/EyedLadyBug1.jpeg")));
-		CampaignDTO campaignDTO = new CampaignDTO("Lady Bug", "Campaign to find Lady Bugs", "2023-10-04 12:00:00", "2023-10-11 12:00:00", groupsToIdentify, area, mairie_de_rennes.getId());
+		CampaignDTO campaignDTO = new CampaignDTO("Lady Bug", "Campaign to find Lady Bugs", "2023-10-04 12:00:00", "2023-10-11 12:00:00", groupsToIdentify, area, mairie_de_rennes);
 
 		CampaignData campaign = campaignController.create(campaignDTO, image);
 		
