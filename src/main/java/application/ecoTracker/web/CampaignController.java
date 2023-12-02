@@ -115,14 +115,10 @@ public class CampaignController {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         
-        Organization organization;
+        Organization organization = organizationDAO.findByName(campaignDTO.getAuthor());
 
-        try{
-            organization = organizationDAO.findById(campaignDTO.getOrganization_id()).get();
-        }
-
-        catch (Exception e) {
-            LOGGER.info("organization " + campaignDTO.getOrganization_id() + " not found");
+        if(organization == null) {
+            LOGGER.info("organization " + campaignDTO.getAuthor() + " not found");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
 
