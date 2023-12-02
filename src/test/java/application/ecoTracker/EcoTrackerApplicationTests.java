@@ -99,6 +99,7 @@ class EcoTrackerApplicationTests {
 		List<CampaignDTO> campaigns = objectMapper.readValue(campaigns_string, new TypeReference<List<CampaignDTO>>(){});
 
 		for(CampaignDTO campaign : campaigns){
+			organizationController.create(campaign.getAuthor());
 			MultipartFile image = new MockMultipartFile("EyedLadyBug1.jpeg", new FileInputStream(new File("src/test/ressources/EyedLadyBug1.jpeg")));
 			campaignController.create(campaign, image);
 		}
