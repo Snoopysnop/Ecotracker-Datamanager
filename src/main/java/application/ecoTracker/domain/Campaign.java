@@ -127,6 +127,7 @@ public class Campaign implements Serializable {
         this.userList = userList;
     }
 
+    @ManyToOne
     public String getOrganization() {
         return organization;
     }
