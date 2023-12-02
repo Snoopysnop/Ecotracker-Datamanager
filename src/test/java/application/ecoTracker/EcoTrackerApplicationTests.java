@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,20 +13,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import application.ecoTracker.DAO.CampaignDAO;
 import application.ecoTracker.DAO.CommentDAO;
 import application.ecoTracker.DAO.ObservationDAO;
 import application.ecoTracker.DAO.UserDAO;
-import application.ecoTracker.domain.User;
-import application.ecoTracker.domain.comment.Comment;
-import application.ecoTracker.domain.utils.Area;
-import application.ecoTracker.domain.utils.GPSCoordinates;
-import application.ecoTracker.domain.utils.TaxonomyGroup;
 import application.ecoTracker.service.DTO.CampaignDTO;
 import application.ecoTracker.service.DTO.ObservationDTO;
-import application.ecoTracker.service.DTO.comment.CommentDTO;
-import application.ecoTracker.service.data.CampaignData;
-import application.ecoTracker.service.data.ObservationData;
 import application.ecoTracker.web.CampaignController;
 import application.ecoTracker.web.ObservationController;
 import application.ecoTracker.web.UserController;
@@ -62,6 +57,48 @@ class EcoTrackerApplicationTests {
 	void contextLoads() {
 	}
 
+	void createObservationsData() throws IOException {
+		File observations_file = new File("src/test/resources/exampleData/observations.json");
+		String observations_string = "";
+		Scanner sc = new Scanner(observations_file);
+
+		while (sc.hasNextLine()) {
+			observations_string += sc.nextLine();
+		  }
+		  sc.close();
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		List<ObservationDTO> observations = objectMapper.readValue(observations_string, new TypeReference<List<ObservationDTO>>(){});
+
+		for(ObservationDTO observation : observations){
+			userController.create(observation.getAuthor_pseudo());
+			MultipartFile image = new MockMultipartFile("EyedLadyBug2.jpeg", new FileInputStream(new File("src/test/ressources/EyedLadyBug1.jpeg")));
+			observationController.create(observation, image);
+		}
+
+	}
+
+	void createCampaignsData() throws IOException {
+		File campaigns_file = new File("src/test/resources/exampleData/campaings.json");
+		String campaigns_string = "";
+		Scanner sc = new Scanner(campaigns_file);
+
+		while (sc.hasNextLine()) {
+			campaigns_string += sc.nextLine();
+		  }
+		  sc.close();
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		List<CampaignDTO> campaigns = objectMapper.readValue(campaigns_string, new TypeReference<List<CampaignDTO>>(){});
+
+		for(CampaignDTO campaign : campaigns){
+			MultipartFile image = new MockMultipartFile("EyedLadyBug1.jpeg", new FileInputStream(new File("src/test/ressources/EyedLadyBug1.jpeg")));
+			campaignController.create(campaign, image);
+		}
+
+	}
+
+
 	/**
 	 * Clear database and create test data
 	 * @throws FileNotFoundException
@@ -76,32 +113,8 @@ class EcoTrackerApplicationTests {
 		userDAO.deleteAll();
 		campaignDAO.deleteAll();
 
-		User snoopy = userController.create("Snoopy");
-		User frageli = userController.create("Frageli");
-
-		String mairie_de_rennes = "Mairie de Rennes";
-
-		List<TaxonomyGroup> groupsToIdentify = Arrays.asList(TaxonomyGroup.Insects);
-		Area area = new Area(new GPSCoordinates(48.130195, -1.650862), 2000);
-
-		MultipartFile image = new MockMultipartFile("EyedLadyBug1.jpeg", new FileInputStream(new File("src/test/ressources/EyedLadyBug1.jpeg")));
-		CampaignDTO campaignDTO = new CampaignDTO("Lady Bug", "Campaign to find Lady Bugs", "2023-10-04 12:00:00", "2023-10-11 12:00:00", groupsToIdentify, area, mairie_de_rennes);
-
-		CampaignData campaign = campaignController.create(campaignDTO, image);
-		
-		ObservationDTO observationDTO = new ObservationDTO(snoopy.getPseudo(), campaign.getId(), TaxonomyGroup.Insects, "Lady Bug Observation", new GPSCoordinates(0, 0), "Lady Bug Observation description");
-	    image = new MockMultipartFile("EyedLadyBug2.jpeg", new FileInputStream(new File("src/test/ressources/EyedLadyBug2.jpeg")));
-
-
-		ObservationData observationData = observationController.create(observationDTO, image);
-
-		CommentDTO commentDTO = new CommentDTO("comment", frageli.getPseudo());
-		observationController.comment(observationData.getId(), commentDTO);
-
-		Comment reference = commentDAO.findAll().get(0);
-
-		commentDTO = new CommentDTO("reply", snoopy.getPseudo());
-		observationController.reply(reference.getId(), commentDTO);
+		createObservationsData();
+		createCampaignsData();
 	}
 
 }
