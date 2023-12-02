@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import application.ecoTracker.domain.Observation;
+import application.ecoTracker.domain.utils.GPSCoordinates;
 
 public class ObservationData implements Serializable {
 
@@ -17,7 +18,7 @@ public class ObservationData implements Serializable {
     private String taxonomyGroup;
     private String title;
     private List<String> imageList;
-    private String location;
+    private GPSCoordinates location;
     private String description;
     private LocalDateTime creationDate;
 
@@ -33,7 +34,7 @@ public class ObservationData implements Serializable {
             imageList.add(observationsImageFolder + this.id + "/" + imageFile);
         }
 
-        this.location = observation.getLocation().toString();
+        this.location = observation.getLocation();
         this.description = observation.getDescription();
         this.creationDate = observation.getCreationDate();
 
@@ -63,10 +64,10 @@ public class ObservationData implements Serializable {
     public void setImageList(List<String> imageList) {
         this.imageList = imageList;
     }
-    public String getLocation() {
+    public GPSCoordinates getLocation() {
         return location;
     }
-    public void setLocation(String location) {
+    public void setLocation(GPSCoordinates location) {
         this.location = location;
     }
     public String getDescription() {
