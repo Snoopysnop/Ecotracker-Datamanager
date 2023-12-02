@@ -29,7 +29,7 @@ public class CampaignData implements Serializable {
         this.endDate = campaign.getEndDate().toString();
         this.groupsToIdentify = campaign.getGroupsToIdentify();
         this.area = campaign.getArea();
-        this.organization_name = campaign.getOrganization();
+        this.organization_name = campaign.getOrganization().getName();
         this.imageLocation = campaignsImageFolder + this.id + "/" + new File(campaignsImageFolder + this.id + "/").list()[0];
     }
 

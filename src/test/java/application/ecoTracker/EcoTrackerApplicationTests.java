@@ -19,11 +19,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import application.ecoTracker.DAO.CampaignDAO;
 import application.ecoTracker.DAO.CommentDAO;
 import application.ecoTracker.DAO.ObservationDAO;
+import application.ecoTracker.DAO.OrganizationDAO;
 import application.ecoTracker.DAO.UserDAO;
 import application.ecoTracker.service.DTO.CampaignDTO;
 import application.ecoTracker.service.DTO.ObservationDTO;
 import application.ecoTracker.web.CampaignController;
 import application.ecoTracker.web.ObservationController;
+import application.ecoTracker.web.OrganizationController;
 import application.ecoTracker.web.UserController;
 
 
@@ -32,6 +34,9 @@ class EcoTrackerApplicationTests {
 
 	@Autowired
     private UserController userController;
+
+	@Autowired
+    private OrganizationController organizationController;
 
 	@Autowired
     private CampaignController campaignController;
@@ -50,7 +55,9 @@ class EcoTrackerApplicationTests {
 
 	@Autowired
 	private ObservationDAO observationDAO;
-	
+
+	@Autowired
+	private OrganizationDAO organizationDAO;
 
 
 	@Test
@@ -112,6 +119,7 @@ class EcoTrackerApplicationTests {
 		observationDAO.deleteAll();
 		userDAO.deleteAll();
 		campaignDAO.deleteAll();
+		organizationDAO.deleteAll();
 
 		createObservationsData();
 		createCampaignsData();
