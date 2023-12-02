@@ -90,7 +90,7 @@ class EcoTrackerApplicationTests {
 
 		Organization mairie_de_rennes = organizationController.create("Mairie de Rennes");
 
-		List<TaxonomyGroup> groupsToIdentify = Arrays.asList(TaxonomyGroup.Insect);
+		List<TaxonomyGroup> groupsToIdentify = Arrays.asList(TaxonomyGroup.Insects);
 		Area area = new Area(new GPSCoordinates(48.130195, -1.650862), 2000);
 
 		MultipartFile image = new MockMultipartFile("EyedLadyBug1.jpeg", new FileInputStream(new File("src/test/ressources/EyedLadyBug1.jpeg")));
@@ -98,7 +98,7 @@ class EcoTrackerApplicationTests {
 
 		CampaignData campaign = campaignController.create(campaignDTO, image);
 		
-		ObservationDTO observationDTO = new ObservationDTO(snoopy.getPseudo(), campaign.getId(), TaxonomyGroup.Insect, "Lady Bug Observation", new GPSCoordinates(0, 0), "Lady Bug Observation description");
+		ObservationDTO observationDTO = new ObservationDTO(snoopy.getPseudo(), campaign.getId(), TaxonomyGroup.Insects, "Lady Bug Observation", new GPSCoordinates(0, 0), "Lady Bug Observation description");
 	    image = new MockMultipartFile("EyedLadyBug2.jpeg", new FileInputStream(new File("src/test/ressources/EyedLadyBug2.jpeg")));
 
 
