@@ -1,6 +1,8 @@
 package application.ecoTracker.web;
 
 import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -134,9 +136,9 @@ public class ObservationController {
     public ObservationData create(@RequestPart("observationDTO") ObservationDTO observationDTO, @RequestPart("image") MultipartFile image){
 
         // TODO : check if user logged in
-        User author = userDAO.findByPseudo(observationDTO.getAuthor_pseudo());
+        User author = userDAO.findByPseudo(observationDTO.getAuthor());
         if(author == null) {
-            LOGGER.info("User " + observationDTO.getAuthor_pseudo() + " not found");
+            LOGGER.info("User " + observationDTO.getAuthor() + " not found");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
 
@@ -150,7 +152,8 @@ public class ObservationController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         
-        Observation observation = new Observation(author, campaign, observationDTO.getTaxonomyGroup(), observationDTO.getTitle(), observationDTO.getLocation(), observationDTO.getDescription());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        Observation observation = new Observation(author, campaign, observationDTO.getTaxonomyGroup(), observationDTO.getTitle(), observationDTO.getCoordinates(), observationDTO.getDescription(), LocalDateTime.parse(observationDTO.getCreationDate(), formatter));
         observationDAO.save(observation);
 
         File pathFile = new File(observationsImageFolder + observation.getId());

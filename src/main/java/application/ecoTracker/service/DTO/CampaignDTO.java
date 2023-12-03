@@ -15,21 +15,21 @@ public class CampaignDTO implements Serializable {
     private List<TaxonomyGroup> groupsToIdentify;
     private Area area;
 
-    private long organization_id;
+    private String author;
 
     protected CampaignDTO() {
 
     }
 
     public CampaignDTO(String title, String description, String startDate, String endDate,
-            List<TaxonomyGroup> groupsToIdentify, Area area, long organization_id) {
+            List<TaxonomyGroup> groupsToIdentify, Area area, String author) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
         this.groupsToIdentify = groupsToIdentify;
         this.area = area;
-        this.organization_id = organization_id;
+        this.author = author;
     }
 
     public String getTitle() {
@@ -82,13 +82,12 @@ public class CampaignDTO implements Serializable {
         this.area = area;
     }
 
-    public long getOrganization_id() {
-        return organization_id;
+    public String getAuthor() {
+        return author;
     }
 
-
-    public void setOrganization_id(long organization_id) {
-        this.organization_id = organization_id;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     

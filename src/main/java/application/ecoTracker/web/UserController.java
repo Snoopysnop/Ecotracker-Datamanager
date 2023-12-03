@@ -22,6 +22,7 @@ import application.ecoTracker.DAO.UserDAO;
 import application.ecoTracker.domain.Campaign;
 import application.ecoTracker.domain.Observation;
 import application.ecoTracker.domain.User;
+import application.ecoTracker.service.data.CampaignData;
 import application.ecoTracker.service.data.ObservationData;
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -33,6 +34,9 @@ public class UserController {
 
     @Value("${observationsImageFolder}")
     private String observationsImageFolder;
+
+    @Value("${campaignsImageFolder}")
+    private String campaignsImageFolder;
     
     @Autowired
     private UserDAO userDAO;
@@ -102,15 +106,14 @@ public class UserController {
 
     }
 
-    @RequestMapping(value = "/user/{pseudo}/add", method = RequestMethod.PUT)
+    @RequestMapping(value = "/user/{pseudo}/campaigns", method = RequestMethod.GET)
     @CrossOrigin(origins = "http://localhost:3000")
     @ResponseBody
     @Operation(
         tags = {"User"},
-        description = "Add campaign to user's favorite list"
+        description = "Returns all campaigns where user participated"
     )
-    public void addCampaignToFavorites(@PathVariable String pseudo, @RequestBody String campaign_id){
-
+    public List<CampaignData> findUserCampaigns(@PathVariable String pseudo){
         // TODO : check if user logged in
         // TODO : handle user in body / user logged in
 
@@ -119,24 +122,25 @@ public class UserController {
             LOGGER.info("User " + pseudo + " not found");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
-        
 
-        Campaign campaign;
-        try {
-            campaign = campaignDAO.findById(Long.parseLong(campaign_id)).get();
-        } 
-        catch(Exception e){
-            LOGGER.info("Campaign " + campaign_id + " not found");
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        List<Campaign> campaigns = campaignDAO.findAll();
+
+        List<CampaignData> campaignDatas = new ArrayList<>();
+        for(Campaign campaign : campaigns) {
+            for(Observation observation : campaign.getObservationList()){
+                if(observation.getAuthor().equals(user)){
+                    campaignDatas.add(new CampaignData(campaign, campaignsImageFolder));
+                }
+            }
+            
         }
-        
-        List<Campaign> userCampaigns = user.getCampaignList();
-        userCampaigns.add(campaign);
-        user.setCampaignList(userCampaigns);
 
-        userDAO.save(user);
+        return campaignDatas;
+
+        
     }
 
+    
 
 
 

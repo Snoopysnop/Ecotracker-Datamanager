@@ -37,14 +37,14 @@ public class Observation implements Serializable {
     }
 
     public Observation(User author, Campaign campaign, TaxonomyGroup taxonomyGroup, String title,
-            GPSCoordinates location, String description) {
+            GPSCoordinates location, String description, LocalDateTime creationDate) {
         this.author = author;
         this.campaign = campaign;
         this.taxonomyGroup = taxonomyGroup;
         this.title = title;
         this.location = location;
         this.description = description;
-        this.creationDate = LocalDateTime.now();
+        this.creationDate = creationDate;
     }
 
     @Id
