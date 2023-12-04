@@ -54,7 +54,7 @@ public class CampaignController {
     private OrganizationDAO organizationDAO;
 
     @RequestMapping(value = "/campaign/{id}", method = RequestMethod.GET)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin
     @ResponseBody
     @Operation(
         tags = {"Campaign"},
@@ -76,7 +76,7 @@ public class CampaignController {
     }
 
     @RequestMapping(value = "/campaigns", method = RequestMethod.GET)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin
     @ResponseBody
     @Operation(
         tags = {"Campaign"},
@@ -102,7 +102,7 @@ public class CampaignController {
 
     
     @RequestMapping(value = "/campaign/create", method = RequestMethod.POST)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin
     @ResponseBody
     @Operation(
         tags = {"Campaign"},
@@ -143,7 +143,7 @@ public class CampaignController {
     }
 
     @RequestMapping(value = "/campaign/{id}/observations", method = RequestMethod.GET)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin
     @ResponseBody
     @Operation(
         tags = {"Campaign"},

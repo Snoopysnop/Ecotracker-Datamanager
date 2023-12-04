@@ -22,7 +22,7 @@ public class OrganizationController {
     private OrganizationDAO organizationDAO;
 
     @RequestMapping(value = "/organization/create", method = RequestMethod.POST)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin
     @ResponseBody
     @Operation(
         tags = {"Organization"},

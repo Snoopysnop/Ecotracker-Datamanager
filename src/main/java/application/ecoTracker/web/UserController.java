@@ -49,7 +49,7 @@ public class UserController {
     
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin
     @ResponseBody
     @Operation(
         tags = {"User"},
@@ -60,7 +60,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/create", method = RequestMethod.POST)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin
     @ResponseBody
     @Operation(
         tags = {"User"},
@@ -80,7 +80,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/{pseudo}/observations", method = RequestMethod.GET)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin
     @ResponseBody
     @Operation(
         tags = {"User"},
@@ -107,7 +107,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/{pseudo}/campaigns", method = RequestMethod.GET)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin
     @ResponseBody
     @Operation(
         tags = {"User"},

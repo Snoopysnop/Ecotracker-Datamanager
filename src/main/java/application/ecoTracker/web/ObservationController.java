@@ -60,7 +60,7 @@ public class ObservationController {
     private CommentDAO commentDAO;
 
     @RequestMapping(value = "/observation/{id}", method = RequestMethod.GET)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin
     @ResponseBody
     @Operation(
         tags = {"Observation"},
@@ -82,7 +82,7 @@ public class ObservationController {
     }
 
     @RequestMapping(value = "/observations", method = RequestMethod.GET)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin
     @ResponseBody
     @Operation(
         tags = {"Observation"},
@@ -107,7 +107,7 @@ public class ObservationController {
     }
 
     @RequestMapping(value = "/observation/{id}/upload", method = RequestMethod.PUT)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin
     @ResponseBody
     @Operation(
         tags = {"Observation"},
@@ -127,7 +127,7 @@ public class ObservationController {
     }
 
     @RequestMapping(value = "/observation/create", method = RequestMethod.POST)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin
     @ResponseBody
     @Operation(
         tags = {"Observation"},
@@ -174,7 +174,7 @@ public class ObservationController {
     }
 
     @RequestMapping(value = "/observation/{id}/comment", method = RequestMethod.POST)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin
     @ResponseBody
     @Operation(
         tags = {"Observation"},
@@ -203,7 +203,7 @@ public class ObservationController {
     }
 
     @RequestMapping(value = "/observation/comment/{id}/reply", method = RequestMethod.POST)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin
     @ResponseBody
     @Operation(
         tags = {"Observation"},
@@ -231,7 +231,7 @@ public class ObservationController {
     }
 
     @RequestMapping(value = "/observation/{id}/comments", method = RequestMethod.GET)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin
     @ResponseBody
     @Operation(
         tags = {"Observation"},
