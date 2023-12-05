@@ -38,6 +38,7 @@ import application.ecoTracker.service.data.ObservationData;
 import application.ecoTracker.service.data.Comment.CommentData;
 import application.ecoTracker.service.data.Comment.MainCommentData;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.transaction.Transactional;
 
 @RestController
 public class ObservationController {
@@ -230,6 +231,7 @@ public class ObservationController {
         commentDAO.save(comment);
     }
 
+    @Transactional
     @RequestMapping(value = "/observation/{id}/comments", method = RequestMethod.GET)
     @CrossOrigin
     @ResponseBody
