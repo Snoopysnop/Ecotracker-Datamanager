@@ -3,6 +3,7 @@ package application.ecoTracker.service.data;
 import java.io.File;
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Logger;
 
 import application.ecoTracker.domain.Campaign;
 import application.ecoTracker.domain.utils.Area;
@@ -10,6 +11,8 @@ import application.ecoTracker.domain.utils.TaxonomyGroup;
 
 public class CampaignData implements Serializable {
     
+    private static final Logger LOGGER = Logger.getLogger(CampaignData.class.getName());
+
     private long id;
     private String title;
     private String description;
@@ -30,7 +33,14 @@ public class CampaignData implements Serializable {
         this.groupsToIdentify = campaign.getGroupsToIdentify();
         this.area = campaign.getArea();
         this.organization_name = campaign.getOrganization().getName();
-        this.imageLocation = campaignsImageFolder + this.id + "/" + new File(campaignsImageFolder + this.id + "/").list()[0];
+        
+        try{
+            this.imageLocation = campaignsImageFolder + this.id + "/" + new File(campaignsImageFolder + this.id + "/").list()[0];
+        }
+        catch(Exception e){
+            LOGGER.warning("Error creating Campaign data");
+            e.printStackTrace();
+        }
     }
 
     public long getId() {

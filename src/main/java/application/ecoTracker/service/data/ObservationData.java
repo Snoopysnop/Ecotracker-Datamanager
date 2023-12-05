@@ -7,11 +7,14 @@ import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import application.ecoTracker.domain.Observation;
 import application.ecoTracker.domain.utils.GPSCoordinates;
 
 public class ObservationData implements Serializable {
+
+    private static final Logger LOGGER = Logger.getLogger(ObservationData.class.getName());
 
     private Long id;
 
@@ -31,10 +34,17 @@ public class ObservationData implements Serializable {
         this.title = observation.getTitle();
 
         this.imageList = new ArrayList<>();
-        String[]  imageFiles = new File(observationsImageFolder + id + "/").list();
-        for(String imageFile : imageFiles){
-            File image = new File(observationsImageFolder + this.id + "/" + imageFile);
-            imageList.add(Files.readAllBytes(image.toPath()));
+
+        try {
+            String[]  imageFiles = new File(observationsImageFolder + id + "/").list();
+            for(String imageFile : imageFiles){
+                File image = new File(observationsImageFolder + this.id + "/" + imageFile);
+                imageList.add(Files.readAllBytes(image.toPath()));
+            }
+        }
+        catch(Exception e){
+            LOGGER.warning("Error creating observation data");
+            e.printStackTrace();
         }
 
         this.location = observation.getLocation();
