@@ -123,7 +123,7 @@ public class ObservationController {
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.warning("Can't upload for observation " + id);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         observation.setImageList(imageList);
