@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import application.ecoTracker.DAO.CampaignDAO;
 import application.ecoTracker.DAO.ObservationDAO;
 import application.ecoTracker.DAO.UserDAO;
 import application.ecoTracker.domain.Campaign;
@@ -32,19 +30,12 @@ import io.swagger.v3.oas.annotations.Operation;
 public class UserController {
 
     private static final Logger LOGGER = Logger.getLogger(ObservationController.class.getName());
-
-    @Value("${campaignsImageFolder}")
-    private String campaignsImageFolder;
     
     @Autowired
     private UserDAO userDAO;
 
     @Autowired
     private ObservationDAO observationDAO;
-
-    @Autowired
-    private CampaignDAO campaignDAO;
-    
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     @CrossOrigin
@@ -123,7 +114,7 @@ public class UserController {
 
         List<CampaignData> campaignDatas = new ArrayList<>();
         for(Campaign campaign : observationDAO.findCampaignsByUserPseudo(pseudo)){
-            campaignDatas.add(new CampaignData(campaign, campaignsImageFolder));
+            campaignDatas.add(new CampaignData(campaign));
         }
 
         return campaignDatas;

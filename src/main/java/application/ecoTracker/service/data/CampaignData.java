@@ -1,10 +1,7 @@
 package application.ecoTracker.service.data;
 
-import java.io.File;
 import java.io.Serializable;
-import java.nio.file.Files;
 import java.util.List;
-import java.util.logging.Logger;
 
 import application.ecoTracker.domain.Campaign;
 import application.ecoTracker.domain.utils.Area;
@@ -12,8 +9,6 @@ import application.ecoTracker.domain.utils.TaxonomyGroup;
 
 public class CampaignData implements Serializable {
     
-    private static final Logger LOGGER = Logger.getLogger(CampaignData.class.getName());
-
     private long id;
     private String title;
     private String description;
@@ -25,7 +20,7 @@ public class CampaignData implements Serializable {
 
     private String organization_name;
 
-    public CampaignData(Campaign campaign, String campaignsImageFolder) {
+    public CampaignData(Campaign campaign) {
         this.id = campaign.getId();
         this.title = campaign.getTitle();
         this.description = campaign.getDescription();
@@ -34,15 +29,7 @@ public class CampaignData implements Serializable {
         this.groupsToIdentify = campaign.getGroupsToIdentify();
         this.area = campaign.getArea();
         this.organization_name = campaign.getOrganization().getName();
-        
-        try{
-            String imageFile = new File(campaignsImageFolder + this.id + "/").list()[0];
-            this.image = Files.readAllBytes(new File(campaignsImageFolder + this.id + "/" + imageFile).toPath());
-        }
-        catch(Exception e){
-            LOGGER.warning("Error creating Campaign data");
-            e.printStackTrace();
-        }
+        this.image = campaign.getImage();
     }
 
     public long getId() {
