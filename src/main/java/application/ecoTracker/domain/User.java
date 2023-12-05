@@ -1,6 +1,7 @@
 package application.ecoTracker.domain;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,8 @@ import jakarta.persistence.OneToMany;
 public class User implements Serializable {
 
     private String pseudo;
-    
+    private LocalDateTime creationDate;
+
     private List<Observation> observationList;
     private List<Campaign> campaignList = new ArrayList<>();
     private List<Comment> commentList;
@@ -27,6 +29,7 @@ public class User implements Serializable {
 
     public User(String pseudo) {
         this.pseudo = pseudo;
+        this.creationDate = LocalDateTime.now();
     }
 
     @Id
@@ -36,6 +39,14 @@ public class User implements Serializable {
 
     public void setPseudo(String pseudo) {
         this.pseudo = pseudo;
+    }
+
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
     }
 
     @OneToMany(mappedBy  = "author")
