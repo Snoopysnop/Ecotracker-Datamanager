@@ -24,6 +24,8 @@ import application.ecoTracker.DAO.UserDAO;
 import application.ecoTracker.domain.Campaign;
 import application.ecoTracker.service.DTO.CampaignDTO;
 import application.ecoTracker.service.DTO.ObservationDTO;
+import application.ecoTracker.service.DTO.comment.CommentDTO;
+import application.ecoTracker.service.data.ObservationData;
 import application.ecoTracker.web.CampaignController;
 import application.ecoTracker.web.ObservationController;
 import application.ecoTracker.web.OrganizationController;
@@ -65,7 +67,7 @@ class EcoTrackerApplicationTests {
 	void contextLoads() {
 	}
 
-	void createObservationsData() throws IOException {
+	private void createObservationsData() throws IOException {
 		File observations_file = new File("src/test/resources/exampleData/observations.json");
 		String observations_string = "";
 		Scanner sc = new Scanner(observations_file);
@@ -100,7 +102,7 @@ class EcoTrackerApplicationTests {
 
 	}
 
-	void createCampaignsData() throws IOException {
+	private void createCampaignsData() throws IOException {
 		File campaigns_file = new File("src/test/resources/exampleData/campaings.json");
 		String campaigns_string = "";
 		Scanner sc = new Scanner(campaigns_file);
@@ -123,6 +125,24 @@ class EcoTrackerApplicationTests {
 
 	}
 
+	private void createCommentData() {
+		String author  = userDAO.findAll().get(0).getPseudo();
+		String comment_content = "This is a comment.";
+		String reply_content = "This is a reply";
+		for(ObservationData observation : observationController.findAll()){
+			// add comment
+			CommentDTO comment = new CommentDTO(comment_content, author);
+			observationController.comment(observation.getId(), comment);
+			
+			// reply to the comment
+			comment = new CommentDTO(reply_content, author);
+			observationController.reply(observationController.getComments(observation.getId()).get(0).getId(), comment);
+			
+			// add another comment
+			comment = new CommentDTO(comment_content, author);
+			observationController.comment(observation.getId(), comment);
+		}
+	}
 
 	/**
 	 * Clear database and create test data
@@ -141,6 +161,7 @@ class EcoTrackerApplicationTests {
 
 		createCampaignsData();
 		createObservationsData();
+		createCommentData();
 		
 	}
 
