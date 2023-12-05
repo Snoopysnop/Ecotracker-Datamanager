@@ -130,16 +130,9 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
 
-        List<Campaign> campaigns = campaignDAO.findAll();
-
         List<CampaignData> campaignDatas = new ArrayList<>();
-        for(Campaign campaign : campaigns) {
-            for(Observation observation : campaign.getObservationList()){
-                if(observation.getAuthor().equals(user)){
-                    campaignDatas.add(new CampaignData(campaign, campaignsImageFolder));
-                }
-            }
-            
+        for(Campaign campaign : observationDAO.findCampaignsByUserPseudo(pseudo)){
+            campaignDatas.add(new CampaignData(campaign, campaignsImageFolder));
         }
 
         return campaignDatas;
