@@ -1,7 +1,5 @@
 package application.ecoTracker.web;
 
-import java.io.File;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -9,7 +7,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,9 +42,6 @@ public class ObservationController {
 
     private static final Logger LOGGER = Logger.getLogger(ObservationController.class.getName());
 
-    @Value("${observationsImageFolder}")
-    private String observationsImageFolder;
-
     @Autowired
     private ObservationDAO observationDAO;
 
@@ -79,13 +73,8 @@ public class ObservationController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        try {
-            return new ObservationData(observation, observationsImageFolder);
-        } catch (IOException e) {
-            LOGGER.warning("Error getting observation " + id);
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ObservationData(observation);
+
     }
 
     @RequestMapping(value = "/observations", method = RequestMethod.GET)
@@ -100,13 +89,7 @@ public class ObservationController {
 
         List<ObservationData> observationDataList = new ArrayList<>();
         for(Observation observation : observationList){
-            try {
-                observationDataList.add(new ObservationData(observation, observationsImageFolder));
-            }
-            catch(Exception e){
-                LOGGER.warning("error getting observation " + observation.getId());
-                LOGGER.warning(e.toString());
-            }
+            observationDataList.add(new ObservationData(observation));
         }        
 
         return observationDataList;
@@ -124,13 +107,26 @@ public class ObservationController {
 
         // TODO : is user owner of the observation
 
+        Observation observation;
         try {
-            File path = new File(observationsImageFolder + id + "/");
-            image.transferTo(new File(observationsImageFolder + id + "/" + path.list().length + ".png")); 
-        } catch (Exception e) {
-            LOGGER.info("Can't upload for observation " + id);
+            observation = observationDAO.findById(id).get();
+        }
+        catch(Exception e){
+            LOGGER.info("observation " + id + " not found");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
+        
+        List<byte[]> imageList = observation.getImageList();
+        try {
+            imageList.add(image.getBytes());
+            observation.setImageList(imageList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.warning("Can't upload for observation " + id);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        observation.setImageList(imageList);
     }
 
     @RequestMapping(value = "/observation/create", method = RequestMethod.POST)
@@ -140,7 +136,7 @@ public class ObservationController {
         tags = {"Observation"},
         description = "Create an observation"
     )
-    public ObservationData create(@RequestBody ObservationDTO observationDTO /*@RequestPart("observationDTO") ObservationDTO observationDTO, @RequestPart("image") MultipartFile image*/){
+    public ObservationData create(@RequestBody ObservationDTO observationDTO){
 
         // TODO : check if user logged in
         User author = userDAO.findByPseudo(observationDTO.getAuthor());
@@ -163,29 +159,7 @@ public class ObservationController {
         Observation observation = new Observation(author, campaign, observationDTO.getTaxonomyGroup(), observationDTO.getTitle(), observationDTO.getCoordinates(), observationDTO.getDescription(), LocalDateTime.parse(observationDTO.getCreationDate(), formatter));
         observationDAO.save(observation);
         
-        File pathFile = new File(observationsImageFolder + observation.getId());
-        pathFile.mkdir();
-
-        /*
-        try {
-            image.transferTo(new File(observationsImageFolder + observation.getId() + "/0" + ".png"));
-        } catch (Exception e) {
-            LOGGER.warning("Error creating Observation " + observation);
-            e.printStackTrace();
-            observationDAO.delete(observation);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        */
-
-
-
-        try {
-            return new ObservationData(observation, observationsImageFolder);
-        } catch (IOException e) {
-            LOGGER.warning("Error creating observation " + observation.getId());
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
+        return new ObservationData(observation);
     }
 
     @RequestMapping(value = "/observation/{id}/comment", method = RequestMethod.POST)

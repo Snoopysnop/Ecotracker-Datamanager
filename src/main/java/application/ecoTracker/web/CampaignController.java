@@ -39,9 +39,6 @@ public class CampaignController {
 
     private static final Logger LOGGER = Logger.getLogger(ObservationController.class.getName());
 
-    @Value("${observationsImageFolder}")
-    private String observationsImageFolder;
-
     @Value("${campaignsImageFolder}")
     private String campaignsImageFolder;
 
@@ -155,12 +152,7 @@ public class CampaignController {
 
         List<ObservationData> observationDataList = new ArrayList<>();
         for(Observation observation : observationList){
-            try {
-                observationDataList.add(new ObservationData(observation, observationsImageFolder));
-            } catch (IOException e) {
-                LOGGER.warning("Error getting observations for campaign " + id);
-                e.printStackTrace();
-            }
+            observationDataList.add(new ObservationData(observation));
         }
 
         return observationDataList;

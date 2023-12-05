@@ -33,9 +33,6 @@ public class UserController {
 
     private static final Logger LOGGER = Logger.getLogger(ObservationController.class.getName());
 
-    @Value("${observationsImageFolder}")
-    private String observationsImageFolder;
-
     @Value("${campaignsImageFolder}")
     private String campaignsImageFolder;
     
@@ -98,13 +95,7 @@ public class UserController {
 
         List<ObservationData> observationDataList = new ArrayList<>();
         for(Observation observation : observationList){
-            try {
-                observationDataList.add(new ObservationData(observation, observationsImageFolder));
-            }
-            catch(Exception e){
-                LOGGER.warning("error getting observation " + observation.getId());
-                LOGGER.warning(e.toString());
-            }
+            observationDataList.add(new ObservationData(observation));
         }        
 
         return observationDataList;

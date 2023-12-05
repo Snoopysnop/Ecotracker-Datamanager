@@ -1,20 +1,14 @@
 package application.ecoTracker.service.data;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
-import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import application.ecoTracker.domain.Observation;
 import application.ecoTracker.domain.utils.GPSCoordinates;
 
 public class ObservationData implements Serializable {
-
-    private static final Logger LOGGER = Logger.getLogger(ObservationData.class.getName());
 
     private Long id;
 
@@ -22,34 +16,20 @@ public class ObservationData implements Serializable {
 
     private String taxonomyGroup;
     private String title;
-    private List<byte[]> imageList;
+    private List<byte[]> imageList = new ArrayList<>();
     private GPSCoordinates location;
     private String description;
     private LocalDateTime creationDate;
 
-    public ObservationData(Observation observation, String observationsImageFolder) throws IOException{
+    public ObservationData(Observation observation){
         this.id = observation.getId();
         this.author = observation.getAuthor().getPseudo();
         this.taxonomyGroup = observation.getTaxonomyGroup().name();
         this.title = observation.getTitle();
-
-        this.imageList = new ArrayList<>();
-
-        try {
-            String[]  imageFiles = new File(observationsImageFolder + id + "/").list();
-            for(String imageFile : imageFiles){
-                File image = new File(observationsImageFolder + this.id + "/" + imageFile);
-                imageList.add(Files.readAllBytes(image.toPath()));
-            }
-        }
-        catch(Exception e){
-            LOGGER.warning("Error creating observation data");
-            e.printStackTrace();
-        }
-
         this.location = observation.getLocation();
         this.description = observation.getDescription();
         this.creationDate = observation.getCreationDate();
+        this.imageList = observation.getImageList();
 
     }
 
