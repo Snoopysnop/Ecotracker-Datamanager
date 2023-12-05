@@ -22,5 +22,13 @@ public class UserDTO {
         this.pseudo = pseudo;
     }
 
+    public String getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(String creationDate) {
+        this.creationDate = creationDate;
+    }
+
     
 }
