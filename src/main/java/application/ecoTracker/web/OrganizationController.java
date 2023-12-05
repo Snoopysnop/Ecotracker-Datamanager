@@ -12,7 +12,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import application.ecoTracker.DAO.OrganizationDAO;
 import application.ecoTracker.domain.Organization;
-import application.ecoTracker.domain.User;
 import io.swagger.v3.oas.annotations.Operation;
 
 @RestController

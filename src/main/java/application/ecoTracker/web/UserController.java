@@ -22,6 +22,7 @@ import application.ecoTracker.DAO.UserDAO;
 import application.ecoTracker.domain.Campaign;
 import application.ecoTracker.domain.Observation;
 import application.ecoTracker.domain.User;
+import application.ecoTracker.service.DTO.UserDTO;
 import application.ecoTracker.service.data.CampaignData;
 import application.ecoTracker.service.data.ObservationData;
 import io.swagger.v3.oas.annotations.Operation;
@@ -55,8 +56,14 @@ public class UserController {
         tags = {"User"},
         description = "Returns all users"
     )
-    public List<User> findAll() {
-        return userDAO.findAll();
+    public List<UserDTO> findAll() {
+        
+        List<UserDTO> users = new ArrayList<>();
+        for(User user : userDAO.findAll()){
+            users.add(new UserDTO(user));
+        }
+
+        return users;
     }
 
     @RequestMapping(value = "/user/create", method = RequestMethod.POST)
