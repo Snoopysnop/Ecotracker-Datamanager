@@ -4,12 +4,14 @@ import application.ecoTracker.domain.User;
 
 public class UserDTO {
     String pseudo;
+    String creationDate;
 
     protected UserDTO(){
     } 
-    
+
     public UserDTO(User user){
         this.pseudo = user.getPseudo();
+        this.creationDate = user.getCreationDate().toString();
     }
 
     public String getPseudo() {
