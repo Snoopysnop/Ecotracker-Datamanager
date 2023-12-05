@@ -1,6 +1,7 @@
 package application.ecoTracker.web;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -78,7 +79,13 @@ public class ObservationController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        return new ObservationData(observation, observationsImageFolder);
+        try {
+            return new ObservationData(observation, observationsImageFolder);
+        } catch (IOException e) {
+            LOGGER.warning("Error getting observation " + id);
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @RequestMapping(value = "/observations", method = RequestMethod.GET)
@@ -172,7 +179,13 @@ public class ObservationController {
 
 
 
-        return new ObservationData(observation, observationsImageFolder);
+        try {
+            return new ObservationData(observation, observationsImageFolder);
+        } catch (IOException e) {
+            LOGGER.warning("Error creating observation " + observation.getId());
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @RequestMapping(value = "/observation/{id}/comment", method = RequestMethod.POST)

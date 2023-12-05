@@ -1,7 +1,9 @@
 package application.ecoTracker.service.data;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +19,12 @@ public class ObservationData implements Serializable {
 
     private String taxonomyGroup;
     private String title;
-    private List<String> imageList;
+    private List<byte[]> imageList;
     private GPSCoordinates location;
     private String description;
     private LocalDateTime creationDate;
 
-    public ObservationData(Observation observation, String observationsImageFolder){
+    public ObservationData(Observation observation, String observationsImageFolder) throws IOException{
         this.id = observation.getId();
         this.author = observation.getAuthor().getPseudo();
         this.taxonomyGroup = observation.getTaxonomyGroup().name();
@@ -31,7 +33,8 @@ public class ObservationData implements Serializable {
         this.imageList = new ArrayList<>();
         String[]  imageFiles = new File(observationsImageFolder + id + "/").list();
         for(String imageFile : imageFiles){
-            imageList.add(observationsImageFolder + this.id + "/" + imageFile);
+            File image = new File(observationsImageFolder + this.id + "/" + imageFile);
+            imageList.add(Files.readAllBytes(image.toPath()));
         }
 
         this.location = observation.getLocation();
@@ -58,10 +61,10 @@ public class ObservationData implements Serializable {
     public void setTitle(String title) {
         this.title = title;
     }
-    public List<String> getImageList() {
+    public List<byte[]> getImageList() {
         return imageList;
     }
-    public void setImageList(List<String> imageList) {
+    public void setImageList(List<byte[]> imageList) {
         this.imageList = imageList;
     }
     public GPSCoordinates getLocation() {

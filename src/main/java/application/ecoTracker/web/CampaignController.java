@@ -1,6 +1,7 @@
 package application.ecoTracker.web;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -154,7 +155,12 @@ public class CampaignController {
 
         List<ObservationData> observationDataList = new ArrayList<>();
         for(Observation observation : observationList){
-            observationDataList.add(new ObservationData(observation, observationsImageFolder));
+            try {
+                observationDataList.add(new ObservationData(observation, observationsImageFolder));
+            } catch (IOException e) {
+                LOGGER.warning("Error getting observations for campaign " + id);
+                e.printStackTrace();
+            }
         }
 
         return observationDataList;
