@@ -120,13 +120,12 @@ public class ObservationController {
         try {
             imageList.add(image.getBytes());
             observation.setImageList(imageList);
+            observationDAO.save(observation);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.warning("Can't upload for observation " + id);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        observation.setImageList(imageList);
     }
 
     @RequestMapping(value = "/observation/create", method = RequestMethod.POST)
