@@ -1,5 +1,8 @@
 package application.ecoTracker.web;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -86,6 +89,16 @@ public class UserController {
 
         if(userDAO.findByPseudo(pseudo) == null){
             User user = new User(pseudo);
+            
+            try {
+                File image = new File("src/main/resources/images/jenny.jpg");
+                user.setImage(Files.readAllBytes(image.toPath()));
+            } catch (IOException e) {
+                LOGGER.warning("Cannot upload set image for user " + pseudo);
+                e.printStackTrace();
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
             userDAO.save(user);
             return user;
         }
