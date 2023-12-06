@@ -2,6 +2,7 @@ package application.ecoTracker.domain;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import application.ecoTracker.domain.comment.MainComment;
@@ -26,6 +27,7 @@ public class Observation implements Serializable {
     private GPSCoordinates location;
     private String description;
     private LocalDateTime creationDate;
+    private List<byte[]> imageList = new ArrayList<>();
 
     private List<MainComment> commentList;
 
@@ -130,10 +132,18 @@ public class Observation implements Serializable {
     public void setDownVoteCount(int downVoteCount) {
         this.downVoteCount = downVoteCount;
     }
-
+    
     @OneToMany(mappedBy = "observation")
     public List<MainComment> getCommentList() {
         return commentList;
+    }
+
+    public List<byte[]> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(List<byte[]> imageList) {
+        this.imageList = imageList;
     }
 
     public void setCommentList(List<MainComment> commentList) {

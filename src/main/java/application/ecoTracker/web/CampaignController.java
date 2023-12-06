@@ -1,7 +1,5 @@
 package application.ecoTracker.web;
 
-import java.io.File;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -9,7 +7,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,12 +36,6 @@ public class CampaignController {
 
     private static final Logger LOGGER = Logger.getLogger(ObservationController.class.getName());
 
-    @Value("${observationsImageFolder}")
-    private String observationsImageFolder;
-
-    @Value("${campaignsImageFolder}")
-    private String campaignsImageFolder;
-
     @Autowired
     private CampaignDAO campaignDAO;
 
@@ -73,7 +64,7 @@ public class CampaignController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         
-       return new CampaignData(campaign, campaignsImageFolder);
+       return new CampaignData(campaign);
     }
 
     @RequestMapping(value = "/campaigns", method = RequestMethod.GET)
@@ -89,7 +80,7 @@ public class CampaignController {
         List<CampaignData> campaignDataList = new ArrayList<>();
         for(Campaign campaign : campaignList) {
             try{
-                campaignDataList.add(new CampaignData(campaign, campaignsImageFolder));
+                campaignDataList.add(new CampaignData(campaign));
             }
             catch(Exception e){
                 LOGGER.warning("error getting campaign " + campaign.getId());
@@ -122,24 +113,18 @@ public class CampaignController {
             LOGGER.info("organization " + campaignDTO.getAuthor() + " not found");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
-
         Campaign campaign = new Campaign(campaignDTO.getTitle(), campaignDTO.getDescription(), LocalDateTime.parse(campaignDTO.getStartDate(), formatter), LocalDateTime.parse(campaignDTO.getEndDate(), formatter), campaignDTO.getGroupsToIdentify(), campaignDTO.getArea(), organization);
-        campaignDAO.save(campaign);
-
-        // save image
-        File pathFile = new File(campaignsImageFolder + campaign.getId());
-        pathFile.mkdir();
-
-        try {
-            image.transferTo(new File(campaignsImageFolder + campaign.getId() + "/image" + ".png"));
+        
+        try{
+            campaign.setImage(image.getBytes());
         } catch (Exception e) {
-            LOGGER.warning("Error creating campaign " + campaign);
             e.printStackTrace();
-            campaignDAO.delete(campaign);
+            LOGGER.warning("Can't create campaign");
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         
-        return new CampaignData(campaign, campaignsImageFolder);
+        campaignDAO.save(campaign);
+        return new CampaignData(campaign);
 
     }
 
@@ -155,12 +140,7 @@ public class CampaignController {
 
         List<ObservationData> observationDataList = new ArrayList<>();
         for(Observation observation : observationList){
-            try {
-                observationDataList.add(new ObservationData(observation, observationsImageFolder));
-            } catch (IOException e) {
-                LOGGER.warning("Error getting observations for campaign " + id);
-                e.printStackTrace();
-            }
+            observationDataList.add(new ObservationData(observation));
         }
 
         return observationDataList;
