@@ -56,6 +56,23 @@ public class UserController {
         return users;
     }
 
+    @RequestMapping(value = "/user/{pseudo}", method = RequestMethod.GET)
+    @CrossOrigin
+    @ResponseBody
+    @Operation(
+        tags = {"User"},
+        description = "Returns the user"
+    )
+    public UserDTO findOne(@PathVariable String pseudo) {
+        
+        User user = userDAO.findByPseudo(pseudo);
+        if(user == null) {
+            LOGGER.info("User " + pseudo + " not found");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        return new UserDTO(user);
+    }
+
     @RequestMapping(value = "/user/create", method = RequestMethod.POST)
     @CrossOrigin
     @ResponseBody
