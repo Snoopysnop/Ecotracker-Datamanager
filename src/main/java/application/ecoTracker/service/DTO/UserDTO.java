@@ -7,6 +7,7 @@ import application.ecoTracker.domain.User;
 public class UserDTO {
     String pseudo;
     String creationDate;
+    byte[] image;
 
     protected UserDTO(){
     } 
@@ -15,6 +16,7 @@ public class UserDTO {
         this.pseudo = user.getPseudo();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         this.creationDate = user.getCreationDate().format(formatter);
+        this.image = user.getImage();
     }
 
     public String getPseudo() {
@@ -31,6 +33,14 @@ public class UserDTO {
 
     public void setCreationDate(String creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     
