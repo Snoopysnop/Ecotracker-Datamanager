@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import application.ecoTracker.domain.comment.Comment;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 
@@ -17,6 +19,7 @@ public class User implements Serializable {
 
     private String pseudo;
     private LocalDateTime creationDate;
+    private byte[] image;
 
     private List<Observation> observationList;
     private List<Campaign> campaignList = new ArrayList<>();
@@ -26,6 +29,15 @@ public class User implements Serializable {
         
     }
 
+    @Column(columnDefinition="LONGBLOB")
+    @Lob
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
 
     public User(String pseudo) {
         this.pseudo = pseudo;
