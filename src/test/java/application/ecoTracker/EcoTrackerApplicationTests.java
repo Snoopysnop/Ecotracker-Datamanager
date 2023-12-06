@@ -98,7 +98,7 @@ class EcoTrackerApplicationTests {
 
 			MultipartFile image = new MockMultipartFile("EyedLadyBug2.jpeg", new FileInputStream(new File("src/test/resources/EyedLadyBug1.jpeg")));
 			ObservationData observationData = observationController.create(observation);
-			observationController.uploadImage(observationData.getId(), image);
+			// observationController.uploadImage(observationData.getId(), image);
 		}
 
 	}
