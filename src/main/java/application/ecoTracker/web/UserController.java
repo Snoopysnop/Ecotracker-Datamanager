@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import application.ecoTracker.DAO.CampaignDAO;
@@ -138,6 +140,31 @@ public class UserController {
         return campaignDatas;
 
         
+    }
+
+    @RequestMapping(value = "/user/{pseudo}/upload", method = RequestMethod.PATCH)
+    @CrossOrigin
+    @ResponseBody
+    @Operation(
+        tags = {"User"},
+        description = "Set user image"
+    )
+    public void uploadImage(@PathVariable String pseudo, @RequestParam("image") MultipartFile image){
+
+        // TODO : check is user logged in
+        User user = userDAO.findByPseudo(pseudo);
+        if(user == null) {
+            LOGGER.info("User " + pseudo + " not found");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+            user.setImage(image.getBytes());
+            userDAO.save(user);
+        } catch (Exception e) {
+            LOGGER.info("Can't upload profile picture for user " + pseudo);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     

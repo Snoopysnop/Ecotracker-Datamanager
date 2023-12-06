@@ -17,6 +17,7 @@ public class User implements Serializable {
 
     private String pseudo;
     private LocalDateTime creationDate;
+    private byte[] image;
 
     private List<Observation> observationList;
     private List<Campaign> campaignList = new ArrayList<>();
@@ -26,6 +27,13 @@ public class User implements Serializable {
         
     }
 
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
 
     public User(String pseudo) {
         this.pseudo = pseudo;
