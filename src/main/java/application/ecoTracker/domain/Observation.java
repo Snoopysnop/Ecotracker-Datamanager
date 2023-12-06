@@ -9,6 +9,7 @@ import application.ecoTracker.domain.comment.MainComment;
 import application.ecoTracker.domain.utils.GPSCoordinates;
 import application.ecoTracker.domain.utils.TaxonomyGroup;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -142,6 +143,7 @@ public class Observation implements Serializable {
 
     @Column(columnDefinition="LONGBLOB")
     @Lob
+    @ElementCollection
     public List<byte[]> getImageList() {
         return imageList;
     }
