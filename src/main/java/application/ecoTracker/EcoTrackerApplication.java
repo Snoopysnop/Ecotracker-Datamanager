@@ -27,6 +27,7 @@ public class EcoTrackerApplication implements CommandLineRunner{
 
             statement.executeUpdate("ALTER TABLE ecoTracker.Campaign MODIFY COLUMN image LONGBLOB;");
 			statement.executeUpdate("ALTER TABLE ecoTracker.Observation MODIFY COLUMN imageList LONGBLOB;");
+            statement.executeUpdate("ALTER TABLE ecoTracker.User MODIFY COLUMN image LONGBLOB;");
         }
 	}
 }
