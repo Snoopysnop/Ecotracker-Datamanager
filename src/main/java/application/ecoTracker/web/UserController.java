@@ -92,6 +92,9 @@ public class UserController {
             
             try {
                 File image = new File("src/main/resources/images/jenny.jpg");
+                if(!image.exists()){
+                    image = new File("datamanager/src/main/resources/images/jenny.jpg");
+                }
                 user.setImage(Files.readAllBytes(image.toPath()));
             } catch (IOException e) {
                 LOGGER.warning("Cannot upload set image for user " + pseudo);

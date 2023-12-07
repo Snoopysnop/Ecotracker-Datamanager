@@ -103,7 +103,11 @@ class EcoTrackerApplicationTests {
 
 	}
 
-	private void createCampaignsData() throws IOException {
+	@Test
+	void initDatabaseWithCampaignsData() throws IOException {
+
+		clearDatabase();
+
 		File campaigns_file = new File("src/test/resources/exampleData/campaings.json");
 		String campaigns_string = "";
 		Scanner sc = new Scanner(campaigns_file);
@@ -120,7 +124,29 @@ class EcoTrackerApplicationTests {
 			if(organizationDAO.findByName(campaign.getAuthor()) == null){
 				organizationController.create(campaign.getAuthor());
 			}
-			MultipartFile image = new MockMultipartFile("EyedLadyBug1.jpeg", new FileInputStream(new File("src/test/resources/EyedLadyBug1.jpeg")));
+
+			MultipartFile image;
+			switch (campaign.getTitle()) {
+				case "Lady Bug":
+					image = new MockMultipartFile("LadyBug.jpeg", new FileInputStream(new File("src/test/resources/exampleData/images/Campaigns/LadyBug.jpeg")));
+					break;
+				case "Honey Bee":
+					image = new MockMultipartFile("HoneyBee.png", new FileInputStream(new File("src/test/resources/exampleData/images/Campaigns/HoneyBee.png")));
+					break;
+				case "Wild Flowers":
+					image = new MockMultipartFile("WildFlowers.jpg", new FileInputStream(new File("src/test/resources/exampleData/images/Campaigns/WildFlowers.jpg")));
+					break;
+				case "Birds":
+					image = new MockMultipartFile("Birds.jpg", new FileInputStream(new File("src/test/resources/exampleData/images/Campaigns/Birds.jpg")));
+					break;
+				case "Gayeulle's Flora":
+					image = new MockMultipartFile("Flora.png", new FileInputStream(new File("src/test/resources/exampleData/images/Campaigns/Flora.png")));
+					break;
+				default:
+					image = new MockMultipartFile("EyedLadyBug1.jpeg", new FileInputStream(new File("src/test/resources/EyedLadyBug1.jpeg")));
+					break;
+			}
+
 			campaignController.create(campaign, image);
 		}
 
@@ -145,6 +171,16 @@ class EcoTrackerApplicationTests {
 		}
 	}
 
+	private void clearDatabase(){
+
+		commentDAO.deleteAll();
+		observationDAO.deleteAll();
+		userDAO.deleteAll();
+		campaignDAO.deleteAll();
+		organizationDAO.deleteAll();
+
+	}
+
 	/**
 	 * Clear database and create test data
 	 * @throws FileNotFoundException
@@ -153,14 +189,7 @@ class EcoTrackerApplicationTests {
 	@Test
 	void initDatabaseWithTestData() throws FileNotFoundException, IOException {
 
-		// clear database
-		commentDAO.deleteAll();
-		observationDAO.deleteAll();
-		userDAO.deleteAll();
-		campaignDAO.deleteAll();
-		organizationDAO.deleteAll();
-
-		createCampaignsData();
+		initDatabaseWithCampaignsData();
 		createObservationsData();
 		createCommentData();
 		
