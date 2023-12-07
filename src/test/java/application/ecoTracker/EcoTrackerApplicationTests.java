@@ -103,7 +103,11 @@ class EcoTrackerApplicationTests {
 
 	}
 
-	private void createCampaignsData() throws IOException {
+	@Test
+	void initDatabaseWithCampaignsData() throws IOException {
+
+		clearDatabase();
+
 		File campaigns_file = new File("src/test/resources/exampleData/campaings.json");
 		String campaigns_string = "";
 		Scanner sc = new Scanner(campaigns_file);
@@ -145,6 +149,16 @@ class EcoTrackerApplicationTests {
 		}
 	}
 
+	private void clearDatabase(){
+
+		commentDAO.deleteAll();
+		observationDAO.deleteAll();
+		userDAO.deleteAll();
+		campaignDAO.deleteAll();
+		organizationDAO.deleteAll();
+
+	}
+
 	/**
 	 * Clear database and create test data
 	 * @throws FileNotFoundException
@@ -153,14 +167,7 @@ class EcoTrackerApplicationTests {
 	@Test
 	void initDatabaseWithTestData() throws FileNotFoundException, IOException {
 
-		// clear database
-		commentDAO.deleteAll();
-		observationDAO.deleteAll();
-		userDAO.deleteAll();
-		campaignDAO.deleteAll();
-		organizationDAO.deleteAll();
-
-		createCampaignsData();
+		initDatabaseWithCampaignsData();
 		createObservationsData();
 		createCommentData();
 		
