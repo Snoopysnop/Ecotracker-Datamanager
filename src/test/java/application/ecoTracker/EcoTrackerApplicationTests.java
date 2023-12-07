@@ -1,5 +1,7 @@
 package application.ecoTracker;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 
 import application.ecoTracker.DAO.CampaignDAO;
 import application.ecoTracker.DAO.CommentDAO;
@@ -31,8 +35,11 @@ import application.ecoTracker.web.ObservationController;
 import application.ecoTracker.web.OrganizationController;
 import application.ecoTracker.web.UserController;
 
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
 
-@SpringBootTest
+
+@SpringBootTest(properties = {"spring.datasource.initialization-mode=always"})
 class EcoTrackerApplicationTests {
 
 	@Autowired
@@ -67,7 +74,7 @@ class EcoTrackerApplicationTests {
 	void contextLoads() {
 	}
 
-	private void createObservationsData() throws IOException {
+	private void createObservationsData() throws IOException, UnirestException {
 		File observations_file = new File("src/test/resources/exampleData/observations.json");
 		String observations_string = "";
 		Scanner sc = new Scanner(observations_file);
@@ -96,9 +103,17 @@ class EcoTrackerApplicationTests {
 			}
 
 
-			MultipartFile image = new MockMultipartFile("EyedLadyBug2.jpeg", new FileInputStream(new File("src/test/resources/EyedLadyBug1.jpeg")));
+			//MultipartFile image = new MockMultipartFile("EyedLadyBug2.jpeg", new FileInputStream(new File("src/test/resources/EyedLadyBug1.jpeg")));
 			ObservationData observationData = observationController.create(observation);
-			// observationController.uploadImage(observationData.getId(), image);
+			
+			Unirest.setTimeouts(0, 0);
+			HttpResponse<JsonNode> response = Unirest.put("http://localhost:8080/observation/" + observationData.getId() + "/upload")
+			.header("Content-Type", "multipart/form-data")
+			.field("file", new File("src/test/resources/EyedLadyBug1.jpeg"))
+			.asJson();
+			assertEquals(response.getStatus(), 200);
+
+			//observationController.uploadImage(observationData.getId(), image);
 		}
 
 	}
@@ -149,9 +164,10 @@ class EcoTrackerApplicationTests {
 	 * Clear database and create test data
 	 * @throws FileNotFoundException
 	 * @throws IOException
+	 * @throws UnirestException
 	 */
 	@Test
-	void initDatabaseWithTestData() throws FileNotFoundException, IOException {
+	void initDatabaseWithTestData() throws FileNotFoundException, IOException, UnirestException {
 
 		// clear database
 		commentDAO.deleteAll();
